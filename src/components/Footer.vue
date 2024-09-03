@@ -13,16 +13,16 @@
   </footer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .footer {
   padding: 10px 0;
   border-top: 1px solid var(--color-text);
   font-size: 12px;
-}
 
-.footer-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  .footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 </style>
