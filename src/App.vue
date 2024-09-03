@@ -1,47 +1,32 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Header from './components/Header.vue';
+import Main from './components/Main.vue';
+import Footer from './components/Footer.vue';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="app">
+    <Header />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+    <Main class="app-main" />
 
-  <main>
-    <TheWelcome />
-  </main>
+    <Footer />
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.app-main {
+  flex: 1;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.main {
+  padding: 20px 0 40px;
 }
+
 </style>
