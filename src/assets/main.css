@@ -7,6 +7,10 @@
   font-weight: normal;
 }
 
+a, button {
+  cursor: pointer;
+}
+
 a {
   color: var(--color-link);
   font-weight: 600;
