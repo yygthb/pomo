@@ -1,7 +1,8 @@
 <script setup>
 import { computed, ref } from "vue";
+import { i18n } from "../config/i18n";
 import AppButton from "./ui/AppButton.vue";
-import BellSound from '../assets/audio/bell.mp3';
+import BellSound from "../assets/audio/bell.mp3";
 
 const pomodoroTimerValue = 25 * 60;
 
@@ -39,7 +40,7 @@ const sec = computed(() => {
 
 function ringTheBell(sound) {
   let note = new Audio(sound);
-  note.addEventListener("canplaythrough", () => { 
+  note.addEventListener("canplaythrough", () => {
     note.play();
   });
 }
@@ -47,25 +48,42 @@ function ringTheBell(sound) {
 function setTimerToValue(val) {
   timer.value = val;
 }
+
+function setI18nLocale(locale) {
+  i18n.global.locale = locale
+}
 </script>
 
 <template>
   <main class="main">
+    <div class="container">
+      <h1>{{ $t("greet") }}</h1>
+    </div>
+
     <div class="container">
       <div class="pomodoro-container">
         <div class="timer">
           <div>
             {{ timer }}
           </div>
-          <div>{{ min < 10 ? `0${min}` : min }} : {{ sec < 10 ? `0${sec}` : sec }}</div>
+          <div>
+            {{ min < 10 ? `0${min}` : min }} : {{ sec < 10 ? `0${sec}` : sec }}
+          </div>
         </div>
         <div class="controls">
-          <AppButton @click="startTimer">Start</AppButton>
-          <AppButton @click="pauseTimer">Pause</AppButton>
-          <AppButton @click="resetTimer">Reset</AppButton>
+          <AppButton @click="startTimer">{{ $t('pomodoroBtn.start') }}</AppButton>
+          <AppButton @click="pauseTimer">{{ $t('pomodoroBtn.pause') }}</AppButton>
+          <AppButton @click="resetTimer">{{ $t('pomodoroBtn.stop') }}</AppButton>
         </div>
 
-        <!-- <AppButton :text="'Set timer to 10sec'" @click="setTimerToValue(10)" /> -->
+        <AppButton :text="'Set timer to 10sec'" @click="setTimerToValue(10)" />
+        
+        <br>
+        <hr>
+        <br>
+        <AppButton :text="'Ru'" @click="setI18nLocale('ru')" />
+        <AppButton :text="'En'" @click="setI18nLocale('en')" />
+
       </div>
     </div>
   </main>
