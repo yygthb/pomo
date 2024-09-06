@@ -3,6 +3,7 @@ import { computed, ref, watch } from "vue";
 import { i18n } from "../config/i18n";
 import { lessThanTenMod } from "../helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
+import AppCheckbox from "./ui/AppCheckbox.vue";
 import BellSound from "../assets/audio/bell.mp3";
 
 const mainTimerConfiguredVal = ref(5);
@@ -11,24 +12,20 @@ const breakTimerConfiguredVal = ref(1);
 const breakTimer = ref(breakTimerConfiguredVal.value * 60);
 const isRunning = ref(false);
 const activeTimer = ref({
-  name: 'main',                // ['main', 'break'];
-  timer: mainTimer,            // ['mainTimer', 'breakTimer'];
+  name: "main", // ['main', 'break'];
+  timer: mainTimer, // ['mainTimer', 'breakTimer'];
 });
+const isTimerLooped = ref(false);
+// const isTimerLooped = ref(false);
 var timerInterval;
 
-watch(
-  mainTimerConfiguredVal,
-  () => {
-    mainTimer.value = mainTimerConfiguredVal.value * 60;
-  }
-)
+watch(mainTimerConfiguredVal, () => {
+  mainTimer.value = mainTimerConfiguredVal.value * 60;
+});
 
-watch(
-  breakTimerConfiguredVal,
-  () => {
-    breakTimer.value = breakTimerConfiguredVal.value * 60;
-  }
-)
+watch(breakTimerConfiguredVal, () => {
+  breakTimer.value = breakTimerConfiguredVal.value * 60;
+});
 
 function pomodoroBtnHandler() {
   if (isRunning.value === false) {
@@ -63,14 +60,18 @@ function stopTimer() {
   ringTheBell(BellSound);
   isRunning.value = false;
 
-  if (activeTimer.value.name === 'main') {
-    activeTimer.value.name = 'break';
+  if (activeTimer.value.name === "main") {
+    activeTimer.value.name = "break";
     mainTimer.value = mainTimerConfiguredVal.value * 60;
     activeTimer.value.timer = breakTimer;
-  } else if (activeTimer.value.name === 'break') {
-    activeTimer.value.name = 'main';
+  } else if (activeTimer.value.name === "break") {
+    activeTimer.value.name = "main";
     breakTimer.value = breakTimerConfiguredVal.value * 60;
     activeTimer.value.timer = mainTimer;
+  }
+
+  if (isTimerLooped.value) {
+    startTimer();
   }
 }
 
@@ -79,10 +80,11 @@ function skipTimer() {
 }
 
 function ringTheBell(sound) {
-  let note = new Audio(sound);
-  note.addEventListener("canplaythrough", () => {
-    note.play();
-  });
+  // let note = new Audio(sound);
+  // note.addEventListener("canplaythrough", () => {
+  //   note.play();
+  // });
+  console.log('ring the bell')
 }
 
 const mainTimerConverted = computed(() => {
@@ -109,7 +111,9 @@ function setI18nLocale(locale) {
         <div class="pomodoro-timer">
           <span class="timer">pomodoro: {{ mainTimer }}</span>
           &nbsp;
-          <span class="timer">pomodoro converted: {{ mainTimerConverted }}</span>
+          <span class="timer"
+            >pomodoro converted: {{ mainTimerConverted }}</span
+          >
         </div>
         <div class="pomodoro-timer">
           <span class="timer">break: {{ breakTimer }}</span>
@@ -137,14 +141,32 @@ function setI18nLocale(locale) {
         <div class="config">
           <div class="config-item">
             <label for="">pomodoro timer (min):</label>
-            <input v-model="mainTimerConfiguredVal" type="number" min="1" />
+            <input
+              v-model="mainTimerConfiguredVal"
+              type="number"
+              min="1"
+              :disabled="isRunning"
+            />
             <p>val: {{ mainTimerConfiguredVal }}</p>
             <label for="">break timer (min):</label>
-            <input v-model="breakTimerConfiguredVal" type="number" min="1" />
+            <input
+              v-model="breakTimerConfiguredVal"
+              type="number"
+              min="1"
+              :disabled="isRunning"
+            />
             <p>val: {{ breakTimerConfiguredVal }}</p>
             <hr />
             <br />
           </div>
+
+          <div class="config-item">
+            <AppCheckbox v-model="isTimerLooped" />
+            <span>loop timer: {{ isTimerLooped }}</span>
+            <hr />
+            <br />
+          </div>
+
           <div class="config-item">
             <AppButton :text="'Ru'" @click="setI18nLocale('ru')" />
             <AppButton :text="'En'" @click="setI18nLocale('en')" />
