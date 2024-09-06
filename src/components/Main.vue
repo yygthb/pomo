@@ -1,42 +1,82 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { i18n } from "../config/i18n";
+import { lessThanTenMod } from "../helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 import BellSound from "../assets/audio/bell.mp3";
 
-const pomodoroTimerValue = 25 * 60;
-
-const timer = ref(pomodoroTimerValue);
+const mainTimerConfiguredVal = ref(5);
+const mainTimer = ref(mainTimerConfiguredVal.value * 60);
+const breakTimerConfiguredVal = ref(1);
+const breakTimer = ref(breakTimerConfiguredVal.value * 60);
+const isRunning = ref(false);
+const activeTimer = ref({
+  name: 'main',                // ['main', 'break'];
+  timer: mainTimer,            // ['mainTimer', 'breakTimer'];
+});
 var timerInterval;
 
+watch(
+  mainTimerConfiguredVal,
+  () => {
+    mainTimer.value = mainTimerConfiguredVal.value * 60;
+  }
+)
+
+watch(
+  breakTimerConfiguredVal,
+  () => {
+    breakTimer.value = breakTimerConfiguredVal.value * 60;
+  }
+)
+
+function pomodoroBtnHandler() {
+  if (isRunning.value === false) {
+    startTimer();
+  } else {
+    pauseTimer();
+  }
+}
+
 function startTimer() {
+  if (activeTimer.value.timer <= 0) {
+    return;
+  }
+  isRunning.value = true;
   timerInterval = setInterval(() => {
-    if (timer.value > 0) {
-      timer.value--;
+    if (activeTimer.value.timer > 0) {
+      activeTimer.value.timer--;
     } else {
-      clearInterval(timerInterval);
-      ringTheBell(BellSound);
+      stopTimer();
       return;
     }
-  }, 1000);
+  }, 10);
 }
 
 function pauseTimer() {
+  isRunning.value = false;
   clearInterval(timerInterval);
 }
 
-function resetTimer() {
+function stopTimer() {
   clearInterval(timerInterval);
-  timer.value = pomodoroTimerValue;
+  ringTheBell(BellSound);
+  isRunning.value = false;
+
+  if (activeTimer.value.name === 'main') {
+    activeTimer.value.name = 'break';
+    mainTimer.value = mainTimerConfiguredVal.value * 60;
+    activeTimer.value.timer = breakTimer;
+  } else if (activeTimer.value.name === 'break') {
+    activeTimer.value.name = 'main';
+    breakTimer.value = breakTimerConfiguredVal.value * 60;
+    activeTimer.value.timer = mainTimer;
+  }
 }
 
-const min = computed(() => {
-  return Math.floor(timer.value / 60);
-});
-
-const sec = computed(() => {
-  return timer.value - min.value * 60;
-});
+function skipTimer() {
+  stopTimer();
+}
 
 function ringTheBell(sound) {
   let note = new Audio(sound);
@@ -45,45 +85,73 @@ function ringTheBell(sound) {
   });
 }
 
-function setTimerToValue(val) {
-  timer.value = val;
-}
+const mainTimerConverted = computed(() => {
+  const min = Math.floor(mainTimer.value / 60);
+  const sec = mainTimer.value - min * 60;
+  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
+});
+
+const breakTimerConverted = computed(() => {
+  const min = Math.floor(breakTimer.value / 60);
+  const sec = breakTimer.value - min * 60;
+  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
+});
 
 function setI18nLocale(locale) {
-  i18n.global.locale = locale
+  i18n.global.locale = locale;
 }
 </script>
 
 <template>
   <main class="main">
     <div class="container">
-      <h1>{{ $t("greet") }}</h1>
-    </div>
-
-    <div class="container">
       <div class="pomodoro-container">
-        <div class="timer">
-          <div>
-            {{ timer }}
-          </div>
-          <div>
-            {{ min < 10 ? `0${min}` : min }} : {{ sec < 10 ? `0${sec}` : sec }}
-          </div>
+        <div class="pomodoro-timer">
+          <span class="timer">pomodoro: {{ mainTimer }}</span>
+          &nbsp;
+          <span class="timer">pomodoro converted: {{ mainTimerConverted }}</span>
         </div>
+        <div class="pomodoro-timer">
+          <span class="timer">break: {{ breakTimer }}</span>
+          &nbsp;
+          <span class="timer">break converted: {{ breakTimerConverted }}</span>
+        </div>
+
+        <p>active timer: "{{ activeTimer }}"</p>
+
         <div class="controls">
-          <AppButton @click="startTimer">{{ $t('pomodoroBtn.start') }}</AppButton>
-          <AppButton @click="pauseTimer">{{ $t('pomodoroBtn.pause') }}</AppButton>
-          <AppButton @click="resetTimer">{{ $t('pomodoroBtn.stop') }}</AppButton>
+          <AppButton @click="pomodoroBtnHandler">{{
+            isRunning === false
+              ? $t("pomodoroBtn.start")
+              : $t("pomodoroBtn.pause")
+          }}</AppButton>
+          <AppButton @click="skipTimer">Skip</AppButton>
         </div>
+      </div>
 
-        <AppButton :text="'Set timer to 10sec'" @click="setTimerToValue(10)" />
-        
-        <br>
-        <hr>
-        <br>
-        <AppButton :text="'Ru'" @click="setI18nLocale('ru')" />
-        <AppButton :text="'En'" @click="setI18nLocale('en')" />
-
+      <div class="modal">
+        <br />
+        <br />
+        <br />
+        <hr />
+        <div class="config">
+          <div class="config-item">
+            <label for="">pomodoro timer (min):</label>
+            <input v-model="mainTimerConfiguredVal" type="number" min="1" />
+            <p>val: {{ mainTimerConfiguredVal }}</p>
+            <label for="">break timer (min):</label>
+            <input v-model="breakTimerConfiguredVal" type="number" min="1" />
+            <p>val: {{ breakTimerConfiguredVal }}</p>
+            <hr />
+            <br />
+          </div>
+          <div class="config-item">
+            <AppButton :text="'Ru'" @click="setI18nLocale('ru')" />
+            <AppButton :text="'En'" @click="setI18nLocale('en')" />
+            <hr />
+            <br />
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -94,3 +162,4 @@ function setI18nLocale(locale) {
   padding: 20px 0;
 }
 </style>
+npm 

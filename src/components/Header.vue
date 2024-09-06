@@ -10,7 +10,7 @@ function openSettings() {
   <header class="header">
     <div class="container">
       <div class="header-container">
-        <div class="logo">PomodoroTracker</div>
+        <div class="logo">P🍅mo</div>
 
         <div class="control-panel">
           <SettingsIcon class="settings-icon" @click="openSettings" />
