@@ -5,20 +5,22 @@ import { lessThanTenMod } from "../helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 import AppSelect from "./ui/AppSelect.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
+import AppRange from "./ui/AppRange.vue";
 
 import BellSound_1 from "../assets/audio/bell1.mp3";
 import BellSound_2 from "../assets/audio/bell2.mp3";
 import BellSound_3 from "../assets/audio/bell3.mp3";
 import BellSound_4 from "../assets/audio/bell4.mp3";
+import { Ring } from "./services/Ring";
 
-const mainTimerConfiguredVal = ref(5);
+const mainTimerConfiguredVal = ref(1);
 const mainTimer = ref(mainTimerConfiguredVal.value * 60);
 const breakTimerConfiguredVal = ref(1);
 const breakTimer = ref(breakTimerConfiguredVal.value * 60);
 const isRunning = ref(false);
 const activeTimer = ref({
-  name: "main", // ['main', 'break'];
-  timer: mainTimer, // ['mainTimer', 'breakTimer'];
+  name: "main",       // ['main', 'break'];
+  timer: mainTimer,   // ['mainTimer', 'breakTimer'];
 });
 const isTimerLooped = ref(false);
 const ringOptions = ref([
@@ -27,7 +29,11 @@ const ringOptions = ref([
   { name: "Bell 3", value: BellSound_3 },
   { name: "Bell 4", value: BellSound_4 },
 ]);
-const selectedRingOption = ref(ringOptions.value[0]);
+const selectedRingOption = ref(ringOptions.value[1]);
+const volumeLevel = ref(80);
+
+const ring = new Ring(selectedRingOption.value.value);
+
 var timerInterval;
 
 watch(mainTimerConfiguredVal, () => {
@@ -55,7 +61,7 @@ function startTimer() {
     if (activeTimer.value.timer > 0) {
       activeTimer.value.timer--;
     } else {
-      ringTheBell(selectedRingOption.value.value);
+      ring.play();
       stopTimer();
       return;
     }
@@ -90,12 +96,10 @@ function skipTimer() {
   stopTimer();
 }
 
-function ringTheBell(sound) {
-  console.log('ring sound', sound);
-  let note = new Audio(sound);
-  note.addEventListener("canplaythrough", () => {
-    note.play();
-  });
+function volumeLevelChangeHandler() {
+  ring.stop();
+  ring.setVolume(volumeLevel.value);
+  ring.play();
 }
 
 const mainTimerConverted = computed(() => {
@@ -115,7 +119,9 @@ function setI18nLocale(locale) {
 }
 
 function ringSelectedHandler() {
-  ringTheBell(selectedRingOption.value.value);
+  ring.stop();
+  ring.setSound(selectedRingOption.value.value);
+  ring.play();
 }
 </script>
 
@@ -175,7 +181,20 @@ function ringSelectedHandler() {
           </div>
 
           <div class="config-item">
-            <AppSelect :options="ringOptions" v-model="selectedRingOption" :selectedOptionCb="ringSelectedHandler" />
+            <AppRange
+              v-model="volumeLevel"
+              :step="10"
+              :changeHandler="volumeLevelChangeHandler"
+            />
+            <span>ring volume level: {{ volumeLevel }}</span>
+          </div>
+
+          <div class="config-item">
+            <AppSelect
+              :options="ringOptions"
+              v-model="selectedRingOption"
+              :selectedOptionCb="ringSelectedHandler"
+            />
             <p>selectedRingOption: {{ selectedRingOption }}</p>
           </div>
 
