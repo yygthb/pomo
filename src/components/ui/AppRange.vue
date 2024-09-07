@@ -5,6 +5,9 @@ const props = defineProps({
   modelValue: {
     default: 50,
   },
+  step: {
+    default: 1,
+  },
   changeHandler: {
     type: Function,
   }
