@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "ConcertOne";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url(../fonts/ConcertOne/ConcertOne-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Lato";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url(../fonts/Lato/Lato-Regular.ttf) format("truetype");
+}
+
+@mixin fontConcertOne {
+  font-family: "ConcertOne", sans-serif;
+}
+
+@mixin fontLato {
+  font-family: "Lato", sans-serif;
+}

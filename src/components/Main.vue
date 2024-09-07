@@ -217,6 +217,10 @@ function ringSelectedHandler() {
   margin-bottom: 50px;
 }
 
+.pomodoro-timer {
+  @include fontConcertOne;
+}
+
 .config {
   padding: 10px;
   border: 1px solid gray;
