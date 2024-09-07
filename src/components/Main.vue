@@ -5,8 +5,11 @@ import { lessThanTenMod } from "../helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 import AppSelect from "./ui/AppSelect.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
-import BellSound from "../assets/audio/bell.mp3";
 
+import BellSound_1 from "../assets/audio/bell1.mp3";
+import BellSound_2 from "../assets/audio/bell2.mp3";
+import BellSound_3 from "../assets/audio/bell3.mp3";
+import BellSound_4 from "../assets/audio/bell4.mp3";
 
 const mainTimerConfiguredVal = ref(5);
 const mainTimer = ref(mainTimerConfiguredVal.value * 60);
@@ -19,12 +22,12 @@ const activeTimer = ref({
 });
 const isTimerLooped = ref(false);
 const ringOptions = ref([
-  { name: "option val 1", value: "opt1" },
-  { name: "option val 2", value: "opt2" },
-  { name: "option val 3", value: "opt3" },
-  { name: "option val 4", value: "opt4" },
+  { name: "Bell 1", value: BellSound_1 },
+  { name: "Bell 2", value: BellSound_2 },
+  { name: "Bell 3", value: BellSound_3 },
+  { name: "Bell 4", value: BellSound_4 },
 ]);
-const selectedRingOption = ref(null);
+const selectedRingOption = ref(ringOptions.value[0]);
 var timerInterval;
 
 watch(mainTimerConfiguredVal, () => {
@@ -52,6 +55,7 @@ function startTimer() {
     if (activeTimer.value.timer > 0) {
       activeTimer.value.timer--;
     } else {
+      ringTheBell(selectedRingOption.value.value);
       stopTimer();
       return;
     }
@@ -65,7 +69,6 @@ function pauseTimer() {
 
 function stopTimer() {
   clearInterval(timerInterval);
-  ringTheBell(BellSound);
   isRunning.value = false;
 
   if (activeTimer.value.name === "main") {
@@ -88,11 +91,11 @@ function skipTimer() {
 }
 
 function ringTheBell(sound) {
-  // let note = new Audio(sound);
-  // note.addEventListener("canplaythrough", () => {
-  //   note.play();
-  // });
-  console.log("ring the bell");
+  console.log('ring sound', sound);
+  let note = new Audio(sound);
+  note.addEventListener("canplaythrough", () => {
+    note.play();
+  });
 }
 
 const mainTimerConverted = computed(() => {
@@ -109,6 +112,10 @@ const breakTimerConverted = computed(() => {
 
 function setI18nLocale(locale) {
   i18n.global.locale = locale;
+}
+
+function ringSelectedHandler() {
+  ringTheBell(selectedRingOption.value.value);
 }
 </script>
 
@@ -168,7 +175,7 @@ function setI18nLocale(locale) {
           </div>
 
           <div class="config-item">
-            <AppSelect :options="ringOptions" v-model="selectedRingOption" />
+            <AppSelect :options="ringOptions" v-model="selectedRingOption" :selectedOptionCb="ringSelectedHandler" />
             <p>selectedRingOption: {{ selectedRingOption }}</p>
           </div>
 

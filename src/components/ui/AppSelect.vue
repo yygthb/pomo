@@ -20,10 +20,16 @@ const props = defineProps({
   modelValue: {
     default: null,
   },
+  selectedOptionCb: {
+    type: Function,
+  }
 });
 
 onMounted(() => {
   window.addEventListener("click", closeSelect);
+  if (props.modelValue) {
+    selectedValue.value = props.modelValue;
+  }
 });
 
 onBeforeUnmount(() => {
@@ -43,6 +49,7 @@ const mappedSelectedValue = computed(() => {
 function onOptionClick(option) {
   selectedValue.value = option;
   selectEmit("update:modelValue", option);
+  props.selectedOptionCb();
   isOpen.value = false;
 }
 
