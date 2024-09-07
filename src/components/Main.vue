@@ -3,8 +3,10 @@ import { computed, ref, watch } from "vue";
 import { i18n } from "../config/i18n";
 import { lessThanTenMod } from "../helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
+import AppSelect from "./ui/AppSelect.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
 import BellSound from "../assets/audio/bell.mp3";
+
 
 const mainTimerConfiguredVal = ref(5);
 const mainTimer = ref(mainTimerConfiguredVal.value * 60);
@@ -16,7 +18,13 @@ const activeTimer = ref({
   timer: mainTimer, // ['mainTimer', 'breakTimer'];
 });
 const isTimerLooped = ref(false);
-// const isTimerLooped = ref(false);
+const ringOptions = ref([
+  { name: "option val 1", value: "opt1" },
+  { name: "option val 2", value: "opt2" },
+  { name: "option val 3", value: "opt3" },
+  { name: "option val 4", value: "opt4" },
+]);
+const selectedRingOption = ref(null);
 var timerInterval;
 
 watch(mainTimerConfiguredVal, () => {
@@ -84,7 +92,7 @@ function ringTheBell(sound) {
   // note.addEventListener("canplaythrough", () => {
   //   note.play();
   // });
-  console.log('ring the bell')
+  console.log("ring the bell");
 }
 
 const mainTimerConverted = computed(() => {
@@ -134,10 +142,6 @@ function setI18nLocale(locale) {
       </div>
 
       <div class="modal">
-        <br />
-        <br />
-        <br />
-        <hr />
         <div class="config">
           <div class="config-item">
             <label for="">pomodoro timer (min):</label>
@@ -156,22 +160,21 @@ function setI18nLocale(locale) {
               :disabled="isRunning"
             />
             <p>val: {{ breakTimerConfiguredVal }}</p>
-            <hr />
-            <br />
           </div>
 
           <div class="config-item">
             <AppCheckbox v-model="isTimerLooped" />
             <span>loop timer: {{ isTimerLooped }}</span>
-            <hr />
-            <br />
+          </div>
+
+          <div class="config-item">
+            <AppSelect :options="ringOptions" v-model="selectedRingOption" />
+            <p>selectedRingOption: {{ selectedRingOption }}</p>
           </div>
 
           <div class="config-item">
             <AppButton :text="'Ru'" @click="setI18nLocale('ru')" />
             <AppButton :text="'En'" @click="setI18nLocale('en')" />
-            <hr />
-            <br />
           </div>
         </div>
       </div>
@@ -179,9 +182,26 @@ function setI18nLocale(locale) {
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .main {
   padding: 20px 0;
 }
+
+.pomodoro-container {
+  margin-bottom: 50px;
+}
+
+.config {
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+
+  &-item {
+    padding: 10px 0;
+
+    & ~ .config-item {
+      border-top: 1px solid gray;
+    }
+  }
+}
 </style>
-npm 
