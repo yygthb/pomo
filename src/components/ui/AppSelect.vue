@@ -89,12 +89,20 @@ function closeSelect(el) {
 }
 
 .select-value {
-  padding: 10px;
-  border: 1px solid gray;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--b-radius-s);
+  background-color: var(--color-bg-white);
 
   .placeholder {
     opacity: 0.5;
+  }
+
+  &:hover {
+    border-color: var(--color-border-hover);
   }
 }
 
@@ -105,16 +113,18 @@ function closeSelect(el) {
   top: calc(100% + 2px);
   width: 100%;
   margin-top: 2px;
-  border: 1px solid gray;
+  border: 1px solid var(--color-border);
   border-radius: 3px;
-  background-color: #fff;
+  background-color: var(--color-bg-white);
+  box-shadow: 2px 2px 10px var(--color-bg);
 }
 
 .select-option {
   padding: 10px;
 
   &:hover {
-    background-color: lightgray;
+    color: var(--color-text-contrast);
+    background-color: var(--color-bg);
   }
 }
 

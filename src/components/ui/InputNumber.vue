@@ -27,11 +27,17 @@ function onInput(e) {
 
 <style lang="scss" scoped>
 .input {
-  padding: 5px 10px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  display: block;
+  height: 50px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--b-radius-m);
   font-size: 24px;
   outline: none;
   width: 100%;
+
+  &:hover {
+    border-color: var(--color-border-hover);
+  }
 }
 </style>

@@ -4,6 +4,7 @@ import { i18n } from "../config/i18n";
 import IconTimer from "./icons/IconTimer.vue";
 import IconRing from "./icons/IconRing.vue";
 import IconLang from "./icons/IconLang.vue";
+import IconColor from "./icons/IconColor.vue";
 import InputNumber from "./ui/InputNumber.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
 import AppSelect from "./ui/AppSelect.vue";
@@ -38,10 +39,10 @@ const emit = defineEmits([
 ]);
 
 const langOptions = ref([
-  { name: 'En', value: 'en' },
-  { name: 'Ru', value: 'ru' },
-])
-const selectedLang = ref(langOptions.value[0])
+  { name: "En", value: "en" },
+  { name: "Ru", value: "ru" },
+]);
+const selectedLang = ref(langOptions.value[0]);
 
 const mappedMainTimer = computed(() => props.mainTimer);
 function mainTimerChange(val) {
@@ -69,7 +70,7 @@ function volumeLevelChange(val) {
 }
 
 function setI18nLocale(val) {
-  console.log('change lang to ', val);
+  console.log("change lang to ", val);
   i18n.global.locale = val.value;
 }
 </script>
@@ -88,14 +89,18 @@ function setI18nLocale(val) {
         <div class="config-setup">
           <div class="grid-row">
             <div class="config-section">
-              <label class="label">Pomodoro (min): {{ mainTimer }}</label>
+              <label class="label label-timer"
+                >Pomodoro (min): {{ mainTimer }}</label
+              >
               <InputNumber
                 v-model="mappedMainTimer"
                 @onInput="mainTimerChange"
               />
             </div>
             <div class="config-section">
-              <label class="label">Break (min): {{ breakTimer }}</label>
+              <label class="label label-timer"
+                >Break (min): {{ breakTimer }}</label
+              >
               <InputNumber
                 v-model="mappedBreakTimer"
                 @onInput="breakTimerChange"
@@ -146,7 +151,7 @@ function setI18nLocale(val) {
 
         <div class="config-setup">
           <div class="flex-row">
-            <label class="label">Select App Language</label>
+            <label class="label">App Language</label>
             <AppSelect
               class="select-lang"
               :options="langOptions"
@@ -156,6 +161,13 @@ function setI18nLocale(val) {
           </div>
         </div>
       </div>
+
+      <!-- <div class="config-item">
+        <div class="config-item__header">
+          <IconColor class="config-icon" />
+          <div class="config-title">Color Theme</div>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -165,12 +177,13 @@ function setI18nLocale(val) {
   max-width: 400px;
   margin: 20px auto 40px;
   padding: 20px;
-  border: 1px solid gray;
-  border-radius: 10px;
-  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  background-color: var(--color-bg-white);
+  // border: 1px solid var(--color-border);
+  // border-radius: 10px;
+  // box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 
   .settings-title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     text-align: center;
   }
@@ -185,7 +198,7 @@ function setI18nLocale(val) {
 
   & ~ .config-item {
     padding-top: 30px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--color-border-light);
   }
 
   &__header {
@@ -194,10 +207,6 @@ function setI18nLocale(val) {
     gap: 10px;
     margin-bottom: 10px;
     opacity: 0.5;
-  }
-
-  .config-title {
-    font-size: 18px;
   }
 
   .config-setup {
@@ -209,8 +218,12 @@ function setI18nLocale(val) {
   .label {
     display: block;
     margin: 0;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 800;
+
+    &-timer {
+      font-size: 14px;
+    }
   }
 }
 
@@ -235,4 +248,3 @@ function setI18nLocale(val) {
   }
 }
 </style>
-

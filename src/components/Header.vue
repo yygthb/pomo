@@ -22,8 +22,11 @@ function openSettings() {
 
 <style lang="scss" scoped>
 .header {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--color-text);
+  $icon-scale: 1.5;
+
+  padding: 20px 0;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-contrast);
 
   &-container {
     display: flex;
@@ -36,11 +39,13 @@ function openSettings() {
   }
 
   .icon-settings {
+    stroke: var(--color-text-contrast);
     cursor: pointer;
+    transform: scale($icon-scale);
     transition: transform 0.3s;
 
     &:hover {
-      transform: rotate(45deg);
+      transform: scale($icon-scale) rotate(45deg);
     }
   }
 }

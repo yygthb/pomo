@@ -58,19 +58,27 @@ const mappedBreakTimer = computed(() => {
     <div v-if="activeTab === 'break'" class="timer">{{ mappedBreakTimer }}</div>
 
     <div class="timer-btns">
-      <AppButton @click="startClickHandler" class="start-btn">{{
+      <AppButton @click="startClickHandler" class="timer-btn start-btn">{{
         isRunning ? "Pause" : $t("pomodoroBtn.start")
       }}</AppButton>
-      <AppButton @click="skipClickHandler" class="skip-btn">Skip</AppButton>
+      <AppButton @click="skipClickHandler" class="timer-btn skip-btn"
+        >Skip</AppButton
+      >
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.main-page {
+  padding: 40px;
+  border-radius: var(--b-radius-xl);
+  background-color: var(--color-bg-dark);
+}
+
 .tabs {
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 auto 20px;
   width: fit-content;
   gap: 20px;
 
@@ -79,45 +87,43 @@ const mappedBreakTimer = computed(() => {
   }
 
   .tab-item {
-    width: 120px;
+    width: 150px;
     padding: 2px 5px;
-    border-radius: 5px;
+    border-radius: var(--b-radius-l);
     text-align: center;
-    background-color: #eee;
+    border: 1px solid var(--color-bg-dark-2);
+    color: var(--color-text-contrast);
+    background-color: transparent;
     cursor: pointer;
 
     &:hover {
-      background-color: #ddd;
+      background-color: var(--color-bg-dark-2);
     }
 
     &:active {
-      background-color: #ccc;
+      background-color: var(--color-bg-dark-3);
     }
 
     &.active {
-      color: #fff;
-      background-color: lightcoral;
-
-      &:hover,
-      &:active {
-        background-color: lightcoral;
-      }
+      background-color: var(--color-bg-dark-2);
+      pointer-events: none;
     }
   }
 }
 
 .timer {
+  margin-bottom: 20px;
   font-size: 120px;
   line-height: 1.1;
   @include fontConcertOne;
   text-align: center;
+  color: var(--color-text-contrast);
 }
 
 .timer-btns {
   width: max-content;
   margin: 30px auto 0;
-  display: grid;
-  grid-template-columns: repeat(2, 100px);
-  gap: 10px;
+  display: flex;
+  gap: 20px;
 }
 </style>

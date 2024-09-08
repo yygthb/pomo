@@ -39,7 +39,7 @@ function changeHandler(e) {
     position: relative;
     width: $thumbRadius;
     height: $thumbRadius;
-    background: $thumbColor;
+    background: var(--color-bg-dark-4);
     border-radius: 999px;
     border: none;
     pointer-events: all;
@@ -63,21 +63,21 @@ function changeHandler(e) {
       position: absolute;
       width: var(--ProgressPercent, 100%);
       height: 100%;
-      background: $trackColor;
+      background: var(--color-bg);
       pointer-events: none;
       border-radius: 999px;
     }
 
     &::-webkit-slider-runnable-track {
       appearance: none;
-      background: $trackColor;
+      background: var(--color-bg);
       height: $trackHeight;
       border-radius: 999px;
     }
 
     &::-moz-range-track {
       appearance: none;
-      background: $trackColor;
+      background: var(--color-bg);
       height: $trackHeight;
       border-radius: 999px;
     }

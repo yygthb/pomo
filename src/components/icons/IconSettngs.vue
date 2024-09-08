@@ -20,9 +20,3 @@
     </g>
   </svg>
 </template>
-
-<style scoped>
-.settings-icon {
-  stroke: var(--color-text);
-}
-</style>

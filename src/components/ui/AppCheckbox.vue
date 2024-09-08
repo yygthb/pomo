@@ -22,9 +22,9 @@ function onInput(e) {
 <style lang="scss" scoped>
 .checkbox-wrapper .switch {
   display: inline-block;
-  height: 34px;
+  height: 20px;
   position: relative;
-  width: 60px;
+  width: 40px;
 }
 
 .checkbox-wrapper .switch input {
@@ -32,7 +32,7 @@ function onInput(e) {
 }
 
 .checkbox-wrapper .slider {
-  background-color: #ccc;
+  background-color: var(--color-bg);
   bottom: 0;
   cursor: pointer;
   left: 0;
@@ -42,27 +42,27 @@ function onInput(e) {
   transition: 0.4s;
 }
 
-.checkbox-wrapper .slider:before {
-  background-color: #fff;
-  bottom: 4px;
-  content: "";
-  height: 26px;
-  left: 4px;
-  position: absolute;
-  transition: 0.4s;
-  width: 26px;
+.switch:hover .slider {
+  background-color: var(--color-bg-dark);
 }
 
-.checkbox-wrapper input:checked + .slider {
-  background-color: #66bb6a;
+.checkbox-wrapper .slider:before {
+  position: absolute;
+  content: "";
+  left: 2px;
+  bottom: 2px;
+  height: 16px;
+  width: 16px;
+  background-color: var(--color-text-contrast);
+  transition: 0.4s;
 }
 
 .checkbox-wrapper input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(20px);
 }
 
 .checkbox-wrapper .slider.round {
-  border-radius: 34px;
+  border-radius: 20px;
 }
 
 .checkbox-wrapper .slider.round:before {

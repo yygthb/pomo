@@ -7,7 +7,12 @@
       <div class="footer-container">
         <div class="footer-year">@ 2024</div>
 
-        <a class="footer-info" href="https://en.wikipedia.org/wiki/Pomodoro_Technique" target="_blank">Pomodoro Technique Wiki</a>
+        <a
+          class="footer-info"
+          href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
+          target="_blank"
+          >Pomodoro Technique Wiki</a
+        >
       </div>
     </div>
   </footer>
@@ -15,9 +20,14 @@
 
 <style lang="scss" scoped>
 .footer {
-  padding: 10px 0;
-  border-top: 1px solid var(--color-text);
+  padding: 20px 0;
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-contrast);
   font-size: 12px;
+
+  a {
+    color: var(--color-text-contrast);
+  }
 
   .footer-container {
     display: flex;
