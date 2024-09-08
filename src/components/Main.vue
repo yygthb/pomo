@@ -1,7 +1,6 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { i18n } from "../config/i18n";
-import { lessThanTenMod } from "../helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 import AppSelect from "./ui/AppSelect.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
@@ -12,15 +11,18 @@ import BellSound_2 from "../assets/audio/bell2.mp3";
 import BellSound_3 from "../assets/audio/bell3.mp3";
 import BellSound_4 from "../assets/audio/bell4.mp3";
 import { Ring } from "./services/Ring";
+import MainPage from "./MainPage.vue";
 
-const mainTimerConfiguredVal = ref(1);
+const TIMER_INTERVAL_VALUE = 100;
+
+const mainTimerConfiguredVal = ref(3);
 const mainTimer = ref(mainTimerConfiguredVal.value * 60);
 const breakTimerConfiguredVal = ref(1);
 const breakTimer = ref(breakTimerConfiguredVal.value * 60);
 const isRunning = ref(false);
 const activeTimer = ref({
-  name: "main",       // ['main', 'break'];
-  timer: mainTimer,   // ['mainTimer', 'breakTimer'];
+  name: "main", // ['main', 'break'];
+  timer: mainTimer, // ['mainTimer', 'breakTimer'];
 });
 const isTimerLooped = ref(false);
 const ringOptions = ref([
@@ -30,7 +32,7 @@ const ringOptions = ref([
   { name: "Bell 4", value: BellSound_4 },
 ]);
 const selectedRingOption = ref(ringOptions.value[1]);
-const volumeLevel = ref(80);
+const volumeLevel = ref(10);
 
 const ring = new Ring(selectedRingOption.value.value);
 
@@ -44,7 +46,7 @@ watch(breakTimerConfiguredVal, () => {
   breakTimer.value = breakTimerConfiguredVal.value * 60;
 });
 
-function pomodoroBtnHandler() {
+function startClickHandler() {
   if (isRunning.value === false) {
     startTimer();
   } else {
@@ -65,7 +67,7 @@ function startTimer() {
       stopTimer();
       return;
     }
-  }, 10);
+  }, TIMER_INTERVAL_VALUE);
 }
 
 function pauseTimer() {
@@ -102,18 +104,6 @@ function volumeLevelChangeHandler() {
   ring.play();
 }
 
-const mainTimerConverted = computed(() => {
-  const min = Math.floor(mainTimer.value / 60);
-  const sec = mainTimer.value - min * 60;
-  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
-});
-
-const breakTimerConverted = computed(() => {
-  const min = Math.floor(breakTimer.value / 60);
-  const sec = breakTimer.value - min * 60;
-  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
-});
-
 function setI18nLocale(locale) {
   i18n.global.locale = locale;
 }
@@ -123,36 +113,31 @@ function ringSelectedHandler() {
   ring.setSound(selectedRingOption.value.value);
   ring.play();
 }
+
+function tabClickHandler(tabName) {
+  activeTimer.value.name = tabName;
+  if (tabName === "main") {
+    activeTimer.value.timer = mainTimer;
+  } else if (tabName === "break") {
+    activeTimer.value.timer = breakTimer;
+  }
+}
+
 </script>
 
 <template>
   <main class="main">
     <div class="container">
-      <div class="pomodoro-container">
-        <div class="pomodoro-timer">
-          <span class="timer">pomodoro: {{ mainTimer }}</span>
-          &nbsp;
-          <span class="timer"
-            >pomodoro converted: {{ mainTimerConverted }}</span
-          >
-        </div>
-        <div class="pomodoro-timer">
-          <span class="timer">break: {{ breakTimer }}</span>
-          &nbsp;
-          <span class="timer">break converted: {{ breakTimerConverted }}</span>
-        </div>
-
-        <p>active timer: "{{ activeTimer }}"</p>
-
-        <div class="controls">
-          <AppButton @click="pomodoroBtnHandler">{{
-            isRunning === false
-              ? $t("pomodoroBtn.start")
-              : $t("pomodoroBtn.pause")
-          }}</AppButton>
-          <AppButton @click="skipTimer">Skip</AppButton>
-        </div>
-      </div>
+      <MainPage
+        class="timer-container"
+        :mainTimer="mainTimer"
+        :breakTimer="breakTimer"
+        :isRunning="isRunning"
+        :activeTab="activeTimer.name"
+        :tabClickHandler="tabClickHandler"
+        :startClickHandler="startClickHandler"
+        :skipClickHandler="skipTimer"
+      />
 
       <div class="modal">
         <div class="config">
@@ -213,12 +198,8 @@ function ringSelectedHandler() {
   padding: 20px 0;
 }
 
-.pomodoro-container {
+.timer-container {
   margin-bottom: 50px;
-}
-
-.pomodoro-timer {
-  @include fontConcertOne;
 }
 
 .config {
