@@ -122,7 +122,6 @@ function tabClickHandler(tabName) {
     activeTimer.value.timer = breakTimer;
   }
 }
-
 </script>
 
 <template>

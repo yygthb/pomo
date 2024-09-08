@@ -10,20 +10,87 @@ const props = defineProps({
   },
   changeHandler: {
     type: Function,
-  }
-})
+  },
+});
 
-const rangeEmit = defineEmits(['update:modelValue'])
+const rangeEmit = defineEmits(["update:modelValue"]);
 
 function changeHandler(e) {
-  rangeEmit('update:modelValue', e.target.value)
+  rangeEmit("update:modelValue", e.target.value);
   props.changeHandler();
 }
 </script>
 
 <template>
-  <input type="range" :value="modelValue" @input="changeHandler" step="10" />
+  <div class="range-container">
+    <input class="range" type="range" :value="modelValue" @input="changeHandler" step="10" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
+
+.range-container {
+  $trackHeight: 0.8rem;
+  $trackColor: red;
+  $thumbRadius: 1.2rem;
+  $thumbColor: blue;
+
+  @mixin slider-thumb {
+    position: relative;
+    width: $thumbRadius;
+    height: $thumbRadius;
+    background: $thumbColor;
+    border-radius: 999px;
+    border: none;
+    pointer-events: all;
+    appearance: none;
+    z-index: 1;
+  }
+
+  width: fit-content;
+
+  input.range {
+    display: block;
+    position: relative;
+    width: 100%;
+    appearance: none;
+    border-radius: 999px;
+    z-index: 0;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: var(--ProgressPercent, 100%);
+      height: 100%;
+      background: $trackColor;
+      pointer-events: none;
+      border-radius: 999px;
+    }
+
+    &::-webkit-slider-runnable-track {
+      appearance: none;
+      background: $trackColor;
+      height: $trackHeight;
+      border-radius: 999px;
+    }
+
+    &::-moz-range-track {
+      appearance: none;
+      background: $trackColor;
+      height: $trackHeight;
+      border-radius: 999px;
+    }
+
+    &::-moz-range-thumb {
+      @include slider-thumb;
+    }
+
+    &::-webkit-slider-thumb {
+      @include slider-thumb;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
 </style>

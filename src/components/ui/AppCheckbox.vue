@@ -1,11 +1,66 @@
 <script setup>
+import { getCurrentInstance } from "vue";
+
+const { uid } = getCurrentInstance();
 const checked = defineModel();
 </script>
 
 <template>
-  <input type="checkbox" v-model="checked">
+  <div class="checkbox-wrapper">
+    <label class="switch" :for="uid">
+      <input type="checkbox" v-model="checked" :id="uid" />
+      <div class="slider round"></div>
+    </label>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-  
+.checkbox-wrapper .switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.checkbox-wrapper .switch input {
+  display: none;
+}
+
+.checkbox-wrapper .slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+}
+
+.checkbox-wrapper .slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: 0.4s;
+  width: 26px;
+}
+
+.checkbox-wrapper input:checked + .slider {
+  background-color: #66bb6a;
+}
+
+.checkbox-wrapper input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.checkbox-wrapper .slider.round {
+  border-radius: 34px;
+}
+
+.checkbox-wrapper .slider.round:before {
+  border-radius: 50%;
+}
 </style>
