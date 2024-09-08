@@ -1,9 +1,5 @@
 <script setup>
 import IconSettngs from "./icons/IconSettngs.vue";
-
-function openSettings() {
-  console.log("open settings");
-}
 </script>
 
 <template>
@@ -13,7 +9,7 @@ function openSettings() {
         <div class="logo">P🍅mo</div>
 
         <div class="control-panel">
-          <IconSettngs class="icon-settings" @click="openSettings" />
+          <IconSettngs class="icon-settings" />
         </div>
       </div>
     </div>

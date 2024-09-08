@@ -1,6 +1,6 @@
 <script setup>
 import Header from "./components/Header.vue";
-import Main from "./components/Main.vue";
+import MainPage from "./components/MainPage.vue";
 import Footer from "./components/Footer.vue";
 </script>
 
@@ -8,7 +8,7 @@ import Footer from "./components/Footer.vue";
   <div class="app">
     <Header />
 
-    <Main class="main" />
+    <MainPage class="main" />
 
     <Footer />
   </div>

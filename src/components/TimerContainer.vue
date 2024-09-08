@@ -1,0 +1,129 @@
+<script setup>
+import { computed } from "vue";
+import { lessThanTenMod } from "@/helpers/lessThanTenMod";
+import AppButton from "./ui/AppButton.vue";
+
+const props = defineProps({
+  mainTimer: Number,
+  breakTimer: Number,
+  isRunning: {
+    type: Boolean,
+    default: false,
+  },
+  activeTab: {
+    type: String,
+  },
+  tabClickHandler: {
+    type: Function,
+  },
+  startClickHandler: {
+    type: Function,
+  },
+  skipClickHandler: {
+    type: Function,
+  },
+});
+
+const mappedMainTimer = computed(() => {
+  const min = Math.floor(props.mainTimer / 60);
+  const sec = props.mainTimer - min * 60;
+  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
+});
+
+const mappedBreakTimer = computed(() => {
+  const min = Math.floor(props.breakTimer / 60);
+  const sec = props.breakTimer - min * 60;
+  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
+});
+</script>
+
+<template>
+  <div class="timer-container">
+    <div :class="['tabs', isRunning && 'disabled']">
+      <div
+        :class="['tab-item', activeTab === 'main' && 'active']"
+        @click="tabClickHandler('main')"
+      >
+        Pomodoro
+      </div>
+      <div
+        :class="['tab-item', activeTab === 'break' && 'active']"
+        @click="tabClickHandler('break')"
+      >
+        Break
+      </div>
+    </div>
+
+    <div v-if="activeTab === 'main'" class="timer">{{ mappedMainTimer }}</div>
+    <div v-if="activeTab === 'break'" class="timer">{{ mappedBreakTimer }}</div>
+
+    <div class="timer-btns">
+      <AppButton @click="startClickHandler" class="timer-btn start-btn">{{
+        isRunning ? "Pause" : $t("pomodoroBtn.start")
+      }}</AppButton>
+      <AppButton @click="skipClickHandler" class="timer-btn skip-btn"
+        >Skip</AppButton
+      >
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.timer-container {
+  padding: 40px;
+  border-radius: var(--b-radius-xl);
+  background-color: var(--color-bg-dark);
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  margin: 0 auto 20px;
+  width: fit-content;
+  gap: 20px;
+
+  &.disabled {
+    pointer-events: none;
+  }
+
+  .tab-item {
+    width: 150px;
+    padding: 2px 5px;
+    border-radius: var(--b-radius-l);
+    text-align: center;
+    border: 1px solid var(--color-bg-dark-2);
+    color: var(--color-text-contrast);
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-bg-dark-2);
+    }
+
+    &:active {
+      background-color: var(--color-bg-dark-3);
+    }
+
+    &.active {
+      background-color: var(--color-bg-dark-2);
+      pointer-events: none;
+    }
+  }
+}
+
+.timer {
+  margin-bottom: 20px;
+  font-size: 120px;
+  line-height: 1.1;
+  @include fontConcertOne;
+  text-align: center;
+  color: var(--color-text-contrast);
+}
+
+.timer-btns {
+  width: max-content;
+  margin: 30px auto 0;
+  display: flex;
+  gap: 20px;
+}
+</style>

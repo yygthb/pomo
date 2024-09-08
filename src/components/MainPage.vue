@@ -1,129 +1,183 @@
 <script setup>
-import { computed } from "vue";
-import { lessThanTenMod } from "@/helpers/lessThanTenMod";
-import AppButton from "./ui/AppButton.vue";
+import { ref, watch } from "vue";
 
-const props = defineProps({
-  mainTimer: Number,
-  breakTimer: Number,
-  isRunning: {
-    type: Boolean,
-    default: false,
-  },
-  activeTab: {
-    type: String,
-  },
-  tabClickHandler: {
-    type: Function,
-  },
-  startClickHandler: {
-    type: Function,
-  },
-  skipClickHandler: {
-    type: Function,
-  },
+import TimerContainer from "./TimerContainer.vue";
+import AppModal from './ui/AppModal.vue';
+import Settings from "./Settings.vue";
+
+import BellSound_1 from "../assets/audio/bell1.mp3";
+import BellSound_2 from "../assets/audio/bell2.mp3";
+import BellSound_3 from "../assets/audio/bell3.mp3";
+import BellSound_4 from "../assets/audio/bell4.mp3";
+import { Ring } from "./services/Ring";
+
+const TIMER_INTERVAL_VALUE = 10;
+
+const mainTimerConfiguredVal = ref(3);
+const mainTimer = ref(mainTimerConfiguredVal.value * 60);
+const breakTimerConfiguredVal = ref(1);
+const breakTimer = ref(breakTimerConfiguredVal.value * 60);
+const isRunning = ref(false);
+const activeTimer = ref({
+  name: "main", // ['main', 'break'];
+  timer: mainTimer, // ['mainTimer', 'breakTimer'];
+});
+const autoStart = ref(false);
+
+const isOpen = ref(false);
+
+const ringOptions = ref([
+  { name: "Bell 1", value: BellSound_1 },
+  { name: "Bell 2", value: BellSound_2 },
+  { name: "Bell 3", value: BellSound_3 },
+  { name: "Bell 4", value: BellSound_4 },
+]);
+const selectedRingOption = ref(ringOptions.value[1]);
+const volumeLevel = ref(50);
+
+const ring = new Ring(selectedRingOption.value.value);
+
+var timerInterval;
+
+watch(mainTimerConfiguredVal, () => {
+  mainTimer.value = mainTimerConfiguredVal.value * 60;
 });
 
-const mappedMainTimer = computed(() => {
-  const min = Math.floor(props.mainTimer / 60);
-  const sec = props.mainTimer - min * 60;
-  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
+watch(breakTimerConfiguredVal, () => {
+  breakTimer.value = breakTimerConfiguredVal.value * 60;
 });
 
-const mappedBreakTimer = computed(() => {
-  const min = Math.floor(props.breakTimer / 60);
-  const sec = props.breakTimer - min * 60;
-  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
-});
+function startClickHandler() {
+  if (isRunning.value === false) {
+    startTimer();
+  } else {
+    pauseTimer();
+  }
+}
+
+function startTimer() {
+  if (activeTimer.value.timer <= 0) {
+    return;
+  }
+  isRunning.value = true;
+  timerInterval = setInterval(() => {
+    if (activeTimer.value.timer > 0) {
+      activeTimer.value.timer--;
+    } else {
+      ring.play();
+      stopTimer();
+      return;
+    }
+  }, TIMER_INTERVAL_VALUE);
+}
+
+function pauseTimer() {
+  isRunning.value = false;
+  clearInterval(timerInterval);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  isRunning.value = false;
+
+  if (activeTimer.value.name === "main") {
+    activeTimer.value.name = "break";
+    mainTimer.value = mainTimerConfiguredVal.value * 60;
+    activeTimer.value.timer = breakTimer;
+  } else if (activeTimer.value.name === "break") {
+    activeTimer.value.name = "main";
+    breakTimer.value = breakTimerConfiguredVal.value * 60;
+    activeTimer.value.timer = mainTimer;
+  }
+
+  if (autoStart.value) {
+    startTimer();
+  }
+}
+
+function skipTimer() {
+  stopTimer();
+}
+
+function volumeLevelChangeHandler() {
+  ring.stop();
+  ring.setVolume(volumeLevel.value);
+  ring.play();
+}
+
+function ringSelectedHandler() {
+  ring.stop();
+  ring.setSound(selectedRingOption.value.value);
+  ring.play();
+}
+
+function tabClickHandler(tabName) {
+  activeTimer.value.name = tabName;
+  if (tabName === "main") {
+    activeTimer.value.timer = mainTimer;
+  } else if (tabName === "break") {
+    activeTimer.value.timer = breakTimer;
+  }
+}
+
+function updateMainTimer(val) {
+  mainTimerConfiguredVal.value = val;
+}
+
+function updateBreakTimer(val) {
+  breakTimerConfiguredVal.value = val;
+}
+
+function updateAutoStart(val) {
+  autoStart.value = val;
+}
+
+function updateRing(val) {
+  selectedRingOption.value = val;
+  ringSelectedHandler();
+}
+
+function updateVolumeLevel(val) {
+  volumeLevel.value = val;
+  volumeLevelChangeHandler();
+}
 </script>
 
 <template>
-  <div class="main-page">
-    <div :class="['tabs', isRunning && 'disabled']">
-      <div
-        :class="['tab-item', activeTab === 'main' && 'active']"
-        @click="tabClickHandler('main')"
-      >
-        Pomodoro
-      </div>
-      <div
-        :class="['tab-item', activeTab === 'break' && 'active']"
-        @click="tabClickHandler('break')"
-      >
-        Break
-      </div>
-    </div>
+  <main class="main-page">
+    <div class="container">
+      <TimerContainer
+        class="timer-container"
+        :mainTimer="mainTimer"
+        :breakTimer="breakTimer"
+        :isRunning="isRunning"
+        :activeTab="activeTimer.name"
+        :tabClickHandler="tabClickHandler"
+        :startClickHandler="startClickHandler"
+        :skipClickHandler="skipTimer"
+      />
 
-    <div v-if="activeTab === 'main'" class="timer">{{ mappedMainTimer }}</div>
-    <div v-if="activeTab === 'break'" class="timer">{{ mappedBreakTimer }}</div>
+      <Settings
+        :mainTimer="mainTimerConfiguredVal"
+        @updateMainTimer="updateMainTimer"
+        :breakTimer="breakTimerConfiguredVal"
+        @updateBreakTimer="updateBreakTimer"
+        :autoStart="autoStart"
+        @updateAutoStart="updateAutoStart"
+        :ringOptions="ringOptions"
+        :selectedRing="selectedRingOption"
+        @updateRing="updateRing"
+        :volumeLevel="volumeLevel"
+        @updateVolumeLevel="updateVolumeLevel"
+      />
 
-    <div class="timer-btns">
-      <AppButton @click="startClickHandler" class="timer-btn start-btn">{{
-        isRunning ? "Pause" : $t("pomodoroBtn.start")
-      }}</AppButton>
-      <AppButton @click="skipClickHandler" class="timer-btn skip-btn"
-        >Skip</AppButton
-      >
+      <AppModal v-model:isOpen="isOpen" />
     </div>
-  </div>
+  </main>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .main-page {
-  padding: 40px;
-  border-radius: var(--b-radius-xl);
-  background-color: var(--color-bg-dark);
-}
-
-.tabs {
-  display: flex;
-  align-items: center;
-  margin: 0 auto 20px;
-  width: fit-content;
-  gap: 20px;
-
-  &.disabled {
-    pointer-events: none;
-  }
-
-  .tab-item {
-    width: 150px;
-    padding: 2px 5px;
-    border-radius: var(--b-radius-l);
-    text-align: center;
-    border: 1px solid var(--color-bg-dark-2);
-    color: var(--color-text-contrast);
-    background-color: transparent;
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--color-bg-dark-2);
-    }
-
-    &:active {
-      background-color: var(--color-bg-dark-3);
-    }
-
-    &.active {
-      background-color: var(--color-bg-dark-2);
-      pointer-events: none;
-    }
-  }
-}
-
-.timer {
-  margin-bottom: 20px;
-  font-size: 120px;
-  line-height: 1.1;
-  @include fontConcertOne;
-  text-align: center;
-  color: var(--color-text-contrast);
-}
-
-.timer-btns {
-  width: max-content;
-  margin: 30px auto 0;
-  display: flex;
-  gap: 20px;
+  padding: 20px 0;
 }
 </style>
