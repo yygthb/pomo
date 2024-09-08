@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed } from "vue";
 import { lessThanTenMod } from "@/helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 
@@ -59,7 +59,7 @@ const mappedBreakTimer = computed(() => {
 
     <div class="timer-btns">
       <AppButton @click="startClickHandler" class="start-btn">{{
-        isRunning ? "Pause" : "Start"
+        isRunning ? "Pause" : $t("pomodoroBtn.start")
       }}</AppButton>
       <AppButton @click="skipClickHandler" class="skip-btn">Skip</AppButton>
     </div>

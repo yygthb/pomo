@@ -1,5 +1,5 @@
 <script setup>
-import SettingsIcon from "./icons/SettingsIcon.vue";
+import IconSettngs from "./icons/IconSettngs.vue";
 
 function openSettings() {
   console.log("open settings");
@@ -13,7 +13,7 @@ function openSettings() {
         <div class="logo">P🍅mo</div>
 
         <div class="control-panel">
-          <SettingsIcon class="settings-icon" @click="openSettings" />
+          <IconSettngs class="icon-settings" @click="openSettings" />
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@ function openSettings() {
     font-weight: 600;
   }
 
-  .settings-icon {
+  .icon-settings {
     cursor: pointer;
     transition: transform 0.3s;
 

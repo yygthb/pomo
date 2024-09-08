@@ -3,12 +3,17 @@ import { getCurrentInstance } from "vue";
 
 const { uid } = getCurrentInstance();
 const checked = defineModel();
+const emit = defineEmits(["onChange"]);
+
+function onInput(e) {
+  emit("onChange", e.target.checked);
+}
 </script>
 
 <template>
   <div class="checkbox-wrapper">
     <label class="switch" :for="uid">
-      <input type="checkbox" v-model="checked" :id="uid" />
+      <input type="checkbox" v-model="checked" :id="uid" @input="onInput" />
       <div class="slider round"></div>
     </label>
   </div>

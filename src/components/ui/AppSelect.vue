@@ -49,7 +49,7 @@ const mappedSelectedValue = computed(() => {
 function onOptionClick(option) {
   selectedValue.value = option;
   selectEmit("update:modelValue", option);
-  props.selectedOptionCb();
+  props.selectedOptionCb(option);
   isOpen.value = false;
 }
 

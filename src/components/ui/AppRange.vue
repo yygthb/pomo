@@ -6,7 +6,7 @@ const props = defineProps({
     default: 50,
   },
   step: {
-    default: 1,
+    default: 10,
   },
   changeHandler: {
     type: Function,
@@ -17,7 +17,7 @@ const rangeEmit = defineEmits(["update:modelValue"]);
 
 function changeHandler(e) {
   rangeEmit("update:modelValue", e.target.value);
-  props.changeHandler();
+  props.changeHandler(+e.target.value);
 }
 </script>
 

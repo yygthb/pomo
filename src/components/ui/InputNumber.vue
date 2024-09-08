@@ -32,6 +32,6 @@ function onInput(e) {
   border-radius: 5px;
   font-size: 24px;
   outline: none;
-  width: 150px;
+  width: 100%;
 }
 </style>
