@@ -18,8 +18,8 @@ function closeModal() {
 </script>
 
 <template>
-  <div v-if="isOpen" class="overflow" @click="closeModal">
-    <div class="modal" @click.stop>
+  <div v-if="isOpen" class="overflow" @click.self="closeModal">
+    <div class="modal">
       <div class="modal-close" @click="closeModal">✕</div>
       <div class="modal-content">
         <slot />

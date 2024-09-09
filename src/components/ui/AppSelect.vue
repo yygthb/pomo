@@ -22,7 +22,7 @@ const props = defineProps({
   },
   selectedOptionCb: {
     type: Function,
-  }
+  },
 });
 
 onMounted(() => {
@@ -73,7 +73,7 @@ function closeSelect(el) {
           :key="idx"
           class="select-option"
           @click="onOptionClick(option)"
-          >
+        >
           {{ option.name }}
         </li>
       </ul>
