@@ -1,29 +1,19 @@
 <script setup>
-import { setColorTheme } from "@/helpers/colorTheme";
-import { ref } from "vue";
+import { store } from "@/store/store";
+import { computed } from "vue";
 
-const colors = ref([
-  "green",
-  "coral",
-  "purple",
-  "brown",
-  "blue",
-  "light",
-  "dark",
-]);
+const { color } = store;
+const selectedColorTheme = computed(() => color.selectedColorTheme);
 
-const selectedColorTheme = ref(colors.value[0]);
-
-function updateColorTheme(color) {
-  selectedColorTheme.value = color;
-  setColorTheme(color);
+function updateColorTheme(val) {
+  color.setColorTheme(val);
 }
 </script>
 
 <template>
   <ul class="colors-container">
     <div
-      v-for="(color, idx) in colors"
+      v-for="(color, idx) in color.colorThemes"
       :key="idx"
       :class="[
         'color-item',
