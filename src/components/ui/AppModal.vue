@@ -33,17 +33,19 @@ function closeModal() {
   position: fixed;
   z-index: 10;
   top: 0;
-  right: 0;
   left: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 40px 0;
   background-color: rgba(#000, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden scroll;
 
   .modal {
     position: relative;
-    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    padding: 60px;
     border-radius: var(--b-radius-xl);
     color: var(--color-text);
     background-color: var(--color-bg-white);
@@ -61,6 +63,13 @@ function closeModal() {
         color: var(--color-acent);
       }
     }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .overflow .modal {
+    width: 95%;
+    padding: 20px;
   }
 }
 </style>

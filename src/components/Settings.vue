@@ -145,6 +145,16 @@ function setI18nLocale(val) {
           </div>
         </div>
       </div>
+
+      <div class="config-item">
+        <div class="config-item__header">
+          <IconColor class="config-icon" />
+          <div class="config-title">Color Theme</div>
+        </div>
+        <div class="config-setup">
+          <ColorThemeSelector />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -152,8 +162,7 @@ function setI18nLocale(val) {
 <style lang="scss" scoped>
 .settings-container {
   max-width: 400px;
-  margin: 20px auto 40px;
-  padding: 20px;
+  margin: 0 auto;
   background-color: var(--color-bg-white);
 
   .settings-title {
