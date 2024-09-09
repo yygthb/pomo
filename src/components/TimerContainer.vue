@@ -4,25 +4,10 @@ import { store } from "@/store/store";
 import { lessThanTenMod } from "@/helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 
-var timerInterval;
-const TIMER_INTERVAL_VALUE = 100;
-
-const props = defineProps({
-  tabClickHandler: {
-    type: Function,
-  },
-  skipClickHandler: {
-    type: Function,
-  },
-});
-
 const { timer } = store;
 
 onMounted(() => {
-  // timer.setActiveTimerVal();
-  // timer.logTimer();
   timer.updateActiveTimer();
-  console.log("timer: ", timer);
 });
 
 const mappedMainTimer = computed(() => {
@@ -39,6 +24,10 @@ const mappedBreakTimer = computed(() => {
 
 const mappedIsRunning = computed(() => timer.isRunning);
 const activeTab = computed(() => timer.activeTimerName);
+
+function tabClickHandler(val) {
+  timer.setActiveTimerName(val);
+}
 
 function startClickHandler() {
   if (timer.isRunning === false) {
@@ -58,17 +47,12 @@ function pauseTimer() {
 
 function skipClickHandler() {
   timer.stop();
-
-  // if (autoStart.value) {
-  //   startTimer();
-  // }
 }
 </script>
 
 <template>
   <div class="timer-container">
-    <!-- <div :class="['tabs', timer.isRunning && 'disabled']"> -->
-    <div :class="['tabs']">
+    <div :class="['tabs', timer.isRunning && 'disabled']">
       <div
         :class="['tab-item', activeTab === 'main' && 'active']"
         @click="tabClickHandler('main')"

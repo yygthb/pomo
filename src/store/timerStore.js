@@ -2,7 +2,7 @@ const MAIN_TIMER_START_VAL = 2;
 const INITIAL_BREAK_TIMER_VAL = 1;
 
 var timerInterval;
-const TIMER_INTERVAL_VALUE = 10;
+const TIMER_INTERVAL_VALUE = 1000;
 
 export default {
   mainTimerStartVal: MAIN_TIMER_START_VAL,
@@ -36,7 +36,6 @@ export default {
       if (this.activeTimerValue > 0) {
         this.reductionTimer();
       } else {
-        // ring.play();
         console.log('play sound');
         this.stop();
         return;
@@ -68,6 +67,9 @@ export default {
   },
 
   activeTimerName: 'main',                                      // ['main', 'break']
+  setActiveTimerName(val) {
+    this.activeTimerName = val;
+  },
   activeTimerValue: 0,
   autoStart: false,
   setAutoStart(val) {

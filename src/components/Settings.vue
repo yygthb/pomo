@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { store } from "@/store/store";
 import { i18n } from "../config/i18n";
 import IconTimer from "./icons/IconTimer.vue";
@@ -11,24 +11,7 @@ import AppCheckbox from "./ui/AppCheckbox.vue";
 import AppSelect from "./ui/AppSelect.vue";
 import AppRange from "./ui/AppRange.vue";
 
-const props = defineProps({
-  ringOptions: {
-    type: Array,
-  },
-  selectedRing: {
-    type: Object,
-  },
-  volumeLevel: {
-    type: Number,
-  },
-});
-const emit = defineEmits([
-  "updateAutoStart",
-  "updateRing",
-  "updateVolumeLevel",
-]);
-
-const { timer } = store;
+const { timer, sound } = store;
 
 const langOptions = ref([
   { name: "En", value: "en" },
@@ -50,21 +33,18 @@ function breakTimerStartValChange(val) {
 
 const mappedAutoStart = computed(() => timer.autoStart);
 function autoStartChangeHandler(val) {
-  timer.setAutoStart(val)
+  timer.setAutoStart(val);
 }
 
-const mappedSelectedRing = computed(() => props.selectedRing);
 function selectOptionChange(val) {
-  emit("updateRing", val);
+  sound.setSelectedSound(val);
 }
 
-const mappedVolumeLevel = computed(() => props.volumeLevel);
 function volumeLevelChange(val) {
-  emit("updateVolumeLevel", val);
+  sound.setSoundVolumeLevel(val);
 }
 
 function setI18nLocale(val) {
-  console.log("change lang to ", val);
   i18n.global.locale = val.value;
 }
 </script>
@@ -111,7 +91,7 @@ function setI18nLocale(val) {
         </div>
       </div>
 
-      <!-- <div class="config-item">
+      <div class="config-item">
         <div class="config-item__header">
           <IconRing class="config-icon" />
           <div class="config-title">Ring</div>
@@ -122,22 +102,22 @@ function setI18nLocale(val) {
             <label class="label">Select Ringtone</label>
             <AppSelect
               class="select"
-              :options="ringOptions"
-              v-model="mappedSelectedRing"
+              :options="sound.soundOptions"
+              v-model="sound.selectedSound"
               :selectedOptionCb="selectOptionChange"
             />
           </div>
           <div class="flex-row">
             <label class="label">Volume Level</label>
             <AppRange
-              v-model="mappedVolumeLevel"
+              v-model="sound.volumeLevel"
               :changeHandler="volumeLevelChange"
             />
           </div>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <div class="config-item">
+      <div class="config-item">
         <div class="config-item__header">
           <IconLang class="config-icon" />
           <div class="config-title">Language</div>
@@ -154,7 +134,7 @@ function setI18nLocale(val) {
             />
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- <div class="config-item">
         <div class="config-item__header">
