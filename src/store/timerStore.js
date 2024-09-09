@@ -29,26 +29,21 @@ export default {
       return;
     }
 
-    console.log('start timer');
     this.isRunning = true;
     timerInterval = setInterval(() => {
-      console.log('interval', this.activeTimerValue);
       if (this.activeTimerValue > 0) {
         this.reductionTimer();
       } else {
-        console.log('play sound');
         this.stop();
         return;
       }
     }, TIMER_INTERVAL_VALUE);
   },
   pause() {
-    console.log('pause timer')
     this.isRunning = false;
     clearInterval(timerInterval);
   },
   stop() {
-    console.log('stop timer')
     this.isRunning = false;
     clearInterval(timerInterval);
 

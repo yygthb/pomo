@@ -4,10 +4,6 @@ export class Ring extends Audio {
     super.volume = volumeLevel;
   }
 
-  log() {
-    console.log('log ring "this": ', this);
-  }
-
   play() {
     this.stop();
     super.play();
