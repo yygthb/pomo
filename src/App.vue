@@ -1,16 +1,32 @@
 <script setup>
 import Header from "./components/Header.vue";
-import MainPage from "./components/MainPage.vue";
+import TimerContainer from "./components/TimerContainer.vue";
 import Footer from "./components/Footer.vue";
+import AppModal from "./components/ui/AppModal.vue";
+import Settings from "./components/Settings.vue";
+import { store } from "./store/store";
+const { modal } = store;
+
+function closeModalCb() {
+  modal.closeSettings();
+}
 </script>
 
 <template>
   <div class="app">
     <Header />
 
-    <MainPage class="main" />
+    <main class="main">
+      <div class="container">
+        <TimerContainer class="timer-container" />
+      </div>
+    </main>
 
     <Footer />
+
+    <AppModal :isOpen="modal.isSettingsOpen" @closeModal="closeModalCb">
+      <Settings />
+    </AppModal>
   </div>
 </template>
 

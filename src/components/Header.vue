@@ -1,18 +1,11 @@
 <script setup>
-import { computed } from "vue";
 import { store } from "@/store/store";
 import IconSettngs from "./icons/IconSettngs.vue";
-import AppModal from "./ui/AppModal.vue";
 
 const { modal } = store;
-const isOpen = computed(() => modal.isSettingsOpen);
 
 function openModal() {
   modal.openSettings();
-}
-
-function closeModal() {
-  modal.closeSettings();
 }
 </script>
 
@@ -27,8 +20,6 @@ function closeModal() {
         </div>
       </div>
     </div>
-
-    <AppModal :isOpen="isOpen" @closeModal="closeModal">Modal Content</AppModal>
   </header>
 </template>
 

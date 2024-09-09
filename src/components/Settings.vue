@@ -119,16 +119,6 @@ function setI18nLocale(val) {
 
       <div class="config-item">
         <div class="config-item__header">
-          <IconColor class="config-icon" />
-          <div class="config-title">Color Theme</div>
-        </div>
-        <div class="config-setup">
-          <ColorThemeSelector />
-        </div>
-      </div>
-
-      <div class="config-item">
-        <div class="config-item__header">
           <IconLang class="config-icon" />
           <div class="config-title">Language</div>
         </div>
