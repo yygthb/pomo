@@ -2,7 +2,7 @@ const MAIN_TIMER_START_VAL = 2;
 const INITIAL_BREAK_TIMER_VAL = 1;
 
 var timerInterval;
-const TIMER_INTERVAL_VALUE = 1000;
+const TIMER_INTERVAL_VALUE = 10;
 
 export default {
   mainTimerStartVal: MAIN_TIMER_START_VAL,

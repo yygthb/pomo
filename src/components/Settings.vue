@@ -1,13 +1,12 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { store } from "@/store/store";
 import { i18n } from "../config/i18n";
-import { setColorTheme } from "@/helpers/colorTheme";
 import InputNumber from "./ui/InputNumber.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
 import AppSelect from "./ui/AppSelect.vue";
 import AppRange from "./ui/AppRange.vue";
-import ColorSelector from "./ui/ColorSelector.vue";
+import ColorThemeSelector from "./ColorThemeSelector.vue";
 import IconTimer from "./icons/IconTimer.vue";
 import IconRing from "./icons/IconRing.vue";
 import IconLang from "./icons/IconLang.vue";
@@ -18,7 +17,6 @@ const langOptions = ref([
   { name: "En", value: "en" },
   { name: "Ru", value: "ru" },
 ]);
-const colors = ref(["green", "coral"]);
 
 const mappedMainTimerStartVal = computed(() => timer.mainTimerStartVal);
 function mainTimerStartValChange(val) {
@@ -44,11 +42,6 @@ function selectOptionChange(val) {
 function volumeLevelChange(val) {
   sound.setSoundVolumeLevel(val);
 }
-
-const selectedColor = ref(colors.value[0]);
-watch(selectedColor, () => {
-  setColorTheme(selectedColor.value);
-});
 
 const selectedLang = ref(langOptions.value[0]);
 function setI18nLocale(val) {
@@ -130,7 +123,7 @@ function setI18nLocale(val) {
           <div class="config-title">Color Theme</div>
         </div>
         <div class="config-setup">
-          <ColorSelector :colors="colors" v-model="selectedColor" />
+          <ColorThemeSelector />
         </div>
       </div>
 
