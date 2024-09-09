@@ -12,13 +12,13 @@ onMounted(() => {
 
 const mappedMainTimer = computed(() => {
   const min = Math.floor(timer.mainTimer / 60);
-  const sec = timer.mainTimer - min * 60;
+  const sec = Math.floor(timer.mainTimer - min * 60);
   return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
 });
 
 const mappedBreakTimer = computed(() => {
   const min = Math.floor(timer.breakTimer / 60);
-  const sec = timer.breakTimer - min * 60;
+  const sec = Math.floor(timer.breakTimer - min * 60);
   return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
 });
 

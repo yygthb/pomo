@@ -1,5 +1,5 @@
-const MAIN_TIMER_START_VAL = 2;
-const INITIAL_BREAK_TIMER_VAL = 1;
+const MAIN_TIMER_START_VAL = 5;
+const INITIAL_BREAK_TIMER_VAL = 3;
 
 var timerInterval;
 const TIMER_INTERVAL_VALUE = 10;
