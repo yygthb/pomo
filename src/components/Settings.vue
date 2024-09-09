@@ -1,23 +1,24 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { store } from "@/store/store";
 import { i18n } from "../config/i18n";
-import IconTimer from "./icons/IconTimer.vue";
-import IconRing from "./icons/IconRing.vue";
-import IconLang from "./icons/IconLang.vue";
-import IconColor from "./icons/IconColor.vue";
+import { setColorTheme } from "@/helpers/colorTheme";
 import InputNumber from "./ui/InputNumber.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
 import AppSelect from "./ui/AppSelect.vue";
 import AppRange from "./ui/AppRange.vue";
+import ColorSelector from "./ui/ColorSelector.vue";
+import IconTimer from "./icons/IconTimer.vue";
+import IconRing from "./icons/IconRing.vue";
+import IconLang from "./icons/IconLang.vue";
+import IconColor from "./icons/IconColor.vue";
 
 const { timer, sound } = store;
-
 const langOptions = ref([
   { name: "En", value: "en" },
   { name: "Ru", value: "ru" },
 ]);
-const selectedLang = ref(langOptions.value[0]);
+const colors = ref(["green", "coral"]);
 
 const mappedMainTimerStartVal = computed(() => timer.mainTimerStartVal);
 function mainTimerStartValChange(val) {
@@ -44,6 +45,12 @@ function volumeLevelChange(val) {
   sound.setSoundVolumeLevel(val);
 }
 
+const selectedColor = ref(colors.value[0]);
+watch(selectedColor, () => {
+  setColorTheme(selectedColor.value);
+});
+
+const selectedLang = ref(langOptions.value[0]);
 function setI18nLocale(val) {
   i18n.global.locale = val.value;
 }
@@ -119,6 +126,16 @@ function setI18nLocale(val) {
 
       <div class="config-item">
         <div class="config-item__header">
+          <IconColor class="config-icon" />
+          <div class="config-title">Color Theme</div>
+        </div>
+        <div class="config-setup">
+          <ColorSelector :colors="colors" v-model="selectedColor" />
+        </div>
+      </div>
+
+      <div class="config-item">
+        <div class="config-item__header">
           <IconLang class="config-icon" />
           <div class="config-title">Language</div>
         </div>
@@ -135,13 +152,6 @@ function setI18nLocale(val) {
           </div>
         </div>
       </div>
-
-      <!-- <div class="config-item">
-        <div class="config-item__header">
-          <IconColor class="config-icon" />
-          <div class="config-title">Color Theme</div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -152,9 +162,6 @@ function setI18nLocale(val) {
   margin: 20px auto 40px;
   padding: 20px;
   background-color: var(--color-bg-white);
-  // border: 1px solid var(--color-border);
-  // border-radius: 10px;
-  // box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 
   .settings-title {
     font-size: 24px;

@@ -1,16 +1,14 @@
 :root {
+  --c-green: #83AF9B;
+  --c-coral: #F8B195;
+}
+
+:root {
   --c-white: #ffffff;
 
   --c-indigo: #2c3e50;
   --c-indigo-light: #2d5781;
   --c-indigo-dark: #1e3750;
-
-  --c-main: #83AF9B;
-  --c-main-light: #B3CFC2;
-  --c-main-dark: #5B957B;
-  --c-main-dark-2: #367B5C;
-  --c-main-dark-3: #266b4c;
-  --c-main-dark-4: #1c5c3f;
 
   --c-gray: #d3d3d3;
   --c-gray-light: #eee;
@@ -20,6 +18,16 @@
   --b-radius-m: 5px;
   --b-radius-l: 10px;
   --b-radius-xl: 20px;
+}
+
+body,
+body.green {
+  --c-main: #83AF9B;
+  --c-main-light: #B3CFC2;
+  --c-main-dark: #5B957B;
+  --c-main-dark-2: #367B5C;
+  --c-main-dark-3: #266b4c;
+  --c-main-dark-4: #1c5c3f;
 }
 
 body.coral {
