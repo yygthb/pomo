@@ -157,6 +157,8 @@ function updateVolumeLevel(val) {
         :skipClickHandler="skipTimer"
       />
 
+      <Settings />
+<!-- 
       <Settings
         :mainTimer="mainTimerConfiguredVal"
         @updateMainTimer="updateMainTimer"
@@ -169,7 +171,7 @@ function updateVolumeLevel(val) {
         @updateRing="updateRing"
         :volumeLevel="volumeLevel"
         @updateVolumeLevel="updateVolumeLevel"
-      />
+      /> -->
 
       <AppModal v-model:isOpen="isOpen" />
     </div>

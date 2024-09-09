@@ -1,22 +1,14 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
+import { store } from "@/store/store";
 import { lessThanTenMod } from "@/helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
 
+var timerInterval;
+const TIMER_INTERVAL_VALUE = 100;
+
 const props = defineProps({
-  mainTimer: Number,
-  breakTimer: Number,
-  isRunning: {
-    type: Boolean,
-    default: false,
-  },
-  activeTab: {
-    type: String,
-  },
   tabClickHandler: {
-    type: Function,
-  },
-  startClickHandler: {
     type: Function,
   },
   skipClickHandler: {
@@ -24,22 +16,59 @@ const props = defineProps({
   },
 });
 
+const { timer } = store;
+
+onMounted(() => {
+  // timer.setActiveTimerVal();
+  // timer.logTimer();
+  timer.updateActiveTimer();
+  console.log("timer: ", timer);
+});
+
 const mappedMainTimer = computed(() => {
-  const min = Math.floor(props.mainTimer / 60);
-  const sec = props.mainTimer - min * 60;
+  const min = Math.floor(timer.mainTimer / 60);
+  const sec = timer.mainTimer - min * 60;
   return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
 });
 
 const mappedBreakTimer = computed(() => {
-  const min = Math.floor(props.breakTimer / 60);
-  const sec = props.breakTimer - min * 60;
+  const min = Math.floor(timer.breakTimer / 60);
+  const sec = timer.breakTimer - min * 60;
   return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
 });
+
+const mappedIsRunning = computed(() => timer.isRunning);
+const activeTab = computed(() => timer.activeTimerName);
+
+function startClickHandler() {
+  if (timer.isRunning === false) {
+    startTimer();
+  } else {
+    pauseTimer();
+  }
+}
+
+function startTimer() {
+  timer.start();
+}
+
+function pauseTimer() {
+  timer.pause();
+}
+
+function skipClickHandler() {
+  timer.stop();
+
+  // if (autoStart.value) {
+  //   startTimer();
+  // }
+}
 </script>
 
 <template>
   <div class="timer-container">
-    <div :class="['tabs', isRunning && 'disabled']">
+    <!-- <div :class="['tabs', timer.isRunning && 'disabled']"> -->
+    <div :class="['tabs']">
       <div
         :class="['tab-item', activeTab === 'main' && 'active']"
         @click="tabClickHandler('main')"
@@ -59,7 +88,7 @@ const mappedBreakTimer = computed(() => {
 
     <div class="timer-btns">
       <AppButton @click="startClickHandler" class="timer-btn start-btn">{{
-        isRunning ? "Pause" : $t("pomodoroBtn.start")
+        mappedIsRunning ? "Pause" : $t("pomodoroBtn.start")
       }}</AppButton>
       <AppButton @click="skipClickHandler" class="timer-btn skip-btn"
         >Skip</AppButton

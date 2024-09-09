@@ -32,18 +32,18 @@ function onInput(e) {
 }
 
 .checkbox-wrapper .slider {
-  background-color: var(--color-bg);
-  bottom: 0;
-  cursor: pointer;
-  left: 0;
   position: absolute;
-  right: 0;
   top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   transition: 0.4s;
+  background-color: var(--color-border);
+  cursor: pointer;
 }
 
 .switch:hover .slider {
-  background-color: var(--color-bg-dark);
+  background-color: var(--color-border-hover);
 }
 
 .checkbox-wrapper .slider:before {
@@ -55,6 +55,10 @@ function onInput(e) {
   width: 16px;
   background-color: var(--color-text-contrast);
   transition: 0.4s;
+}
+
+.checkbox-wrapper input:checked + .slider {
+  background-color: var(--color-bg);
 }
 
 .checkbox-wrapper input:checked + .slider:before {

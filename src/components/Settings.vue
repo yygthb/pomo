@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
+import { store } from "@/store/store";
 import { i18n } from "../config/i18n";
 import IconTimer from "./icons/IconTimer.vue";
 import IconRing from "./icons/IconRing.vue";
@@ -11,15 +12,6 @@ import AppSelect from "./ui/AppSelect.vue";
 import AppRange from "./ui/AppRange.vue";
 
 const props = defineProps({
-  mainTimer: {
-    type: Number,
-  },
-  breakTimer: {
-    type: Number,
-  },
-  autoStart: {
-    type: Boolean,
-  },
   ringOptions: {
     type: Array,
   },
@@ -31,12 +23,12 @@ const props = defineProps({
   },
 });
 const emit = defineEmits([
-  "updateMainTimer",
-  "updateBreakTimer",
   "updateAutoStart",
   "updateRing",
   "updateVolumeLevel",
 ]);
+
+const { timer } = store;
 
 const langOptions = ref([
   { name: "En", value: "en" },
@@ -44,19 +36,21 @@ const langOptions = ref([
 ]);
 const selectedLang = ref(langOptions.value[0]);
 
-const mappedMainTimer = computed(() => props.mainTimer);
-function mainTimerChange(val) {
-  emit("updateMainTimer", val);
+const mappedMainTimerStartVal = computed(() => timer.mainTimerStartVal);
+function mainTimerStartValChange(val) {
+  timer.setMainTimerStartVal(val);
+  timer.setMainTimer(val);
 }
 
-const mappedBreakTimer = computed(() => props.breakTimer);
-function breakTimerChange(val) {
-  emit("updateBreakTimer", val);
+const mappedBreakTimerStartVal = computed(() => timer.breakTimerStartVal);
+function breakTimerStartValChange(val) {
+  timer.setBreakTimerStartVal(val);
+  timer.setBreakTimer(val);
 }
 
-const mappedAutoStart = computed(() => props.autoStart);
-function autoStartChange(val) {
-  emit("updateAutoStart", val);
+const mappedAutoStart = computed(() => timer.autoStart);
+function autoStartChangeHandler(val) {
+  timer.setAutoStart(val)
 }
 
 const mappedSelectedRing = computed(() => props.selectedRing);
@@ -90,20 +84,20 @@ function setI18nLocale(val) {
           <div class="grid-row">
             <div class="config-section">
               <label class="label label-timer"
-                >Pomodoro (min): {{ mainTimer }}</label
+                >Pomodoro (min): {{ timer.mainTimer }}</label
               >
               <InputNumber
-                v-model="mappedMainTimer"
-                @onInput="mainTimerChange"
+                v-model="mappedMainTimerStartVal"
+                @onInput="mainTimerStartValChange"
               />
             </div>
             <div class="config-section">
               <label class="label label-timer"
-                >Break (min): {{ breakTimer }}</label
+                >Break (min): {{ timer.breakTimer }}</label
               >
               <InputNumber
-                v-model="mappedBreakTimer"
-                @onInput="breakTimerChange"
+                v-model="mappedBreakTimerStartVal"
+                @onInput="breakTimerStartValChange"
               />
             </div>
           </div>
@@ -111,13 +105,13 @@ function setI18nLocale(val) {
             <label class="label">Autostart Next Timer</label>
             <AppCheckbox
               v-model="mappedAutoStart"
-              @onChange="autoStartChange"
+              @onChange="autoStartChangeHandler"
             />
           </div>
         </div>
       </div>
 
-      <div class="config-item">
+      <!-- <div class="config-item">
         <div class="config-item__header">
           <IconRing class="config-icon" />
           <div class="config-title">Ring</div>
@@ -141,9 +135,9 @@ function setI18nLocale(val) {
             />
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="config-item">
+      <!-- <div class="config-item">
         <div class="config-item__header">
           <IconLang class="config-icon" />
           <div class="config-title">Language</div>
@@ -160,7 +154,7 @@ function setI18nLocale(val) {
             />
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- <div class="config-item">
         <div class="config-item__header">

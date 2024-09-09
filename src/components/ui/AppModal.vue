@@ -10,16 +10,20 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:isOpen"]);
+const emit = defineEmits(["update:isOpen", "closeModal"]);
 function closeModal() {
   emit("update:isOpen", false);
+  emit("closeModal");
 }
 </script>
 
 <template>
   <div v-if="isOpen" class="overflow" @click="closeModal">
     <div class="modal" @click.stop>
-      <div class="modal-content">modal content</div>
+      <div class="modal-close" @click="closeModal">✕</div>
+      <div class="modal-content">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -38,9 +42,25 @@ function closeModal() {
   justify-content: center;
 
   .modal {
+    position: relative;
     padding: 40px;
     border-radius: var(--b-radius-xl);
+    color: var(--color-text);
     background-color: var(--color-bg-white);
+
+    &-close {
+      position: absolute;
+      z-index: 1;
+      top: 8px;
+      right: 12px;
+      color: var(--color-text);
+      font-size: 24px;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-acent);
+      }
+    }
   }
 }
 </style>
