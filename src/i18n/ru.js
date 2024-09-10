@@ -1,8 +1,23 @@
 export default {
-  greet: 'привет, мир',
-  pomodoroBtn: {
+  timerTab: {
+    main: 'Pomodoro',
+    break: 'Перерыв',
+  },
+  btn: {
     start: 'Старт',
     pause: 'Пауза',
-    stop: 'Стоп',
+    skip: 'Пропустить',
   },
+  settings: {
+    mainTitle: 'Настройки',
+    timerTitle: 'Время',
+    autoStart: 'Запускать следующий таймер автоматически',
+    soundTitle: 'Звук',
+    soundLabel: 'Мелодия',
+    volumeLabel: 'Громкость',
+    langTitle: 'Язык',
+    langLabel: 'Язык',
+    themeTitle: 'Цветовая тема',
+  },
+  min: 'мин',
 }

@@ -51,20 +51,20 @@ function setI18nLocale(val) {
 
 <template>
   <div class="settings-container">
-    <p class="settings-title">Settings</p>
+    <p class="settings-title">{{ $t("settings.mainTitle") }}</p>
 
     <div class="config-wrapper">
       <div class="config-item">
         <div class="config-item__header">
           <IconTimer class="config-icon" />
-          <div class="config-title">Timer</div>
+          <div class="config-title">{{ $t("settings.timerTitle") }}</div>
         </div>
 
-        <div class="config-setup">
+        <div class="config-setup config-setup__timer">
           <div class="grid-row">
             <div class="config-section">
               <label class="label label-timer"
-                >Pomodoro (min): {{ timer.mainTimer }}</label
+                >{{ $t("timerTab.main") }} ({{ $t("min") }})</label
               >
               <InputNumber
                 v-model="mappedMainTimerStartVal"
@@ -73,7 +73,7 @@ function setI18nLocale(val) {
             </div>
             <div class="config-section">
               <label class="label label-timer"
-                >Break (min): {{ timer.breakTimer }}</label
+                >{{ $t("timerTab.break") }} ({{ $t("min") }})</label
               >
               <InputNumber
                 v-model="mappedBreakTimerStartVal"
@@ -82,7 +82,7 @@ function setI18nLocale(val) {
             </div>
           </div>
           <div class="flex-row">
-            <label class="label">Autostart Next Timer</label>
+            <label class="label">{{ $t("settings.autoStart") }}</label>
             <AppCheckbox
               v-model="mappedAutoStart"
               @onChange="autoStartChangeHandler"
@@ -94,12 +94,12 @@ function setI18nLocale(val) {
       <div class="config-item">
         <div class="config-item__header">
           <IconRing class="config-icon" />
-          <div class="config-title">Ring</div>
+          <div class="config-title">{{ $t('settings.soundTitle') }}</div>
         </div>
 
         <div class="config-setup">
           <div class="flex-row">
-            <label class="label">Select Ringtone</label>
+            <label class="label">{{ $t('settings.soundLabel') }}</label>
             <AppSelect
               class="select"
               :options="sound.soundOptions"
@@ -108,7 +108,7 @@ function setI18nLocale(val) {
             />
           </div>
           <div class="flex-row">
-            <label class="label">Volume Level</label>
+            <label class="label">{{ $t('settings.volumeLabel') }}</label>
             <AppRange
               v-model="sound.volumeLevel"
               :changeHandler="volumeLevelChange"
@@ -120,12 +120,12 @@ function setI18nLocale(val) {
       <div class="config-item">
         <div class="config-item__header">
           <IconLang class="config-icon" />
-          <div class="config-title">Language</div>
+          <div class="config-title">{{ $t('settings.langTitle') }}</div>
         </div>
 
         <div class="config-setup">
           <div class="flex-row">
-            <label class="label">App Language</label>
+            <label class="label">{{ $t('settings.langLabel') }}</label>
             <AppSelect
               class="select-lang"
               :options="langOptions"
@@ -139,7 +139,7 @@ function setI18nLocale(val) {
       <div class="config-item">
         <div class="config-item__header">
           <IconColor class="config-icon" />
-          <div class="config-title">Color Theme</div>
+          <div class="config-title">{{ $t('settings.themeTitle') }}</div>
         </div>
         <div class="config-setup">
           <ColorThemeSelector />
@@ -192,11 +192,15 @@ function setI18nLocale(val) {
     display: block;
     margin: 0;
     font-size: 18px;
-    font-weight: 800;
+    // font-weight: 800;
 
     &-timer {
       font-size: 14px;
     }
+  }
+
+  .config-setup__timer .label {
+    font-weight: 400;
   }
 }
 
@@ -211,6 +215,7 @@ function setI18nLocale(val) {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
 .select {

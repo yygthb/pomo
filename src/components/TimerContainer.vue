@@ -57,13 +57,13 @@ function skipClickHandler() {
         :class="['tab-item', activeTab === 'main' && 'active']"
         @click="tabClickHandler('main')"
       >
-        Pomodoro
+      {{ $t("timerTab.main") }}
       </div>
       <div
         :class="['tab-item', activeTab === 'break' && 'active']"
         @click="tabClickHandler('break')"
       >
-        Break
+        {{ $t("timerTab.break") }}
       </div>
     </div>
 
@@ -72,11 +72,11 @@ function skipClickHandler() {
 
     <div class="timer-btns">
       <AppButton @click="startClickHandler" class="timer-btn start-btn">{{
-        mappedIsRunning ? "Pause" : $t("pomodoroBtn.start")
+        mappedIsRunning ? $t("btn.pause") : $t("btn.start")
       }}</AppButton>
-      <AppButton @click="skipClickHandler" class="timer-btn skip-btn"
-        >Skip</AppButton
-      >
+      <AppButton @click="skipClickHandler" class="timer-btn skip-btn">{{
+        $t("btn.skip")
+      }}</AppButton>
     </div>
   </div>
 </template>
