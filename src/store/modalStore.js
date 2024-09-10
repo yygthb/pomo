@@ -1,5 +1,5 @@
 export default {
-  isSettingsOpen: true,
+  isSettingsOpen: false,
   openSettings() {
     this.isSettingsOpen = true;
   },
