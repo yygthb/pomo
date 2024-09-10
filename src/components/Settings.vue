@@ -1,7 +1,6 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { store } from "@/store/store";
-import { i18n } from "../config/i18n";
 import InputNumber from "./ui/InputNumber.vue";
 import AppCheckbox from "./ui/AppCheckbox.vue";
 import AppSelect from "./ui/AppSelect.vue";
@@ -12,11 +11,7 @@ import IconRing from "./icons/IconRing.vue";
 import IconLang from "./icons/IconLang.vue";
 import IconColor from "./icons/IconColor.vue";
 
-const { timer, sound } = store;
-const langOptions = ref([
-  { name: "En", value: "en" },
-  { name: "Ru", value: "ru" },
-]);
+const { timer, sound, lang } = store;
 
 const mappedMainTimerStartVal = computed(() => timer.mainTimerStartVal);
 function mainTimerStartValChange(val) {
@@ -43,9 +38,8 @@ function volumeLevelChange(val) {
   sound.setSoundVolumeLevel(val);
 }
 
-const selectedLang = ref(langOptions.value[0]);
-function setI18nLocale(val) {
-  i18n.global.locale = val.value;
+function setLang(val) {
+  lang.setLang(val);
 }
 </script>
 
@@ -94,12 +88,12 @@ function setI18nLocale(val) {
       <div class="config-item">
         <div class="config-item__header">
           <IconRing class="config-icon" />
-          <div class="config-title">{{ $t('settings.soundTitle') }}</div>
+          <div class="config-title">{{ $t("settings.soundTitle") }}</div>
         </div>
 
         <div class="config-setup">
           <div class="flex-row">
-            <label class="label">{{ $t('settings.soundLabel') }}</label>
+            <label class="label">{{ $t("settings.soundLabel") }}</label>
             <AppSelect
               class="select"
               :options="sound.soundOptions"
@@ -108,7 +102,7 @@ function setI18nLocale(val) {
             />
           </div>
           <div class="flex-row">
-            <label class="label">{{ $t('settings.volumeLabel') }}</label>
+            <label class="label">{{ $t("settings.volumeLabel") }}</label>
             <AppRange
               v-model="sound.volumeLevel"
               :changeHandler="volumeLevelChange"
@@ -120,17 +114,17 @@ function setI18nLocale(val) {
       <div class="config-item">
         <div class="config-item__header">
           <IconLang class="config-icon" />
-          <div class="config-title">{{ $t('settings.langTitle') }}</div>
+          <div class="config-title">{{ $t("settings.langTitle") }}</div>
         </div>
 
         <div class="config-setup">
           <div class="flex-row">
-            <label class="label">{{ $t('settings.langLabel') }}</label>
+            <label class="label">{{ $t("settings.langLabel") }}</label>
             <AppSelect
               class="select-lang"
-              :options="langOptions"
-              v-model="selectedLang"
-              :selectedOptionCb="setI18nLocale"
+              :options="lang.langOptions"
+              v-model="lang.selectedLang"
+              :selectedOptionCb="setLang"
             />
           </div>
         </div>
@@ -139,7 +133,7 @@ function setI18nLocale(val) {
       <div class="config-item">
         <div class="config-item__header">
           <IconColor class="config-icon" />
-          <div class="config-title">{{ $t('settings.themeTitle') }}</div>
+          <div class="config-title">{{ $t("settings.themeTitle") }}</div>
         </div>
         <div class="config-setup">
           <ColorThemeSelector />

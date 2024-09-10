@@ -3,7 +3,7 @@ import en from '../i18n/en';
 import ru from '../i18n/ru';
 
 export const i18n = createI18n({
-  locale: 'ru',
+  locale: 'en',
   messages: {
     en,
     ru,
