@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted } from "vue";
 import { store } from "@/store/store";
 import { lessThanTenMod } from "@/helpers/lessThanTenMod";
 import AppButton from "./ui/AppButton.vue";
@@ -7,6 +7,7 @@ import AppButton from "./ui/AppButton.vue";
 const { timer, sound } = store;
 
 onMounted(() => {
+  timer.initCb(() => sound.ring.play());
   timer.updateActiveTimer();
 });
 
@@ -24,13 +25,6 @@ const mappedBreakTimer = computed(() => {
 
 const mappedIsRunning = computed(() => timer.isRunning);
 const activeTab = computed(() => timer.activeTimerName);
-
-const mappedTimerValueIsNull = computed(() => timer.timerValueIsNull);
-watch(mappedTimerValueIsNull, () => {
-  if (mappedTimerValueIsNull.value) {
-    sound.ring.play();
-  }
-});
 
 function tabClickHandler(val) {
   timer.setActiveTimerName(val);

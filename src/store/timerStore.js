@@ -23,10 +23,18 @@ export default {
     this.breakTimer = min * 60;
   },
 
+  cb: null,
+  initCb(cb) {
+    this.cb = cb;
+  },
+  runCb() {
+    if (this.cb) {
+      this.cb();
+    }
+  },
+
   isRunning: false,
-  timerValueIsNull: false,
   start() {
-    this.timerValueIsNull = false;
     if (this.activeTimerValue <= 0) {
       return;
     }
@@ -36,7 +44,7 @@ export default {
       if (this.activeTimerValue > 0) {
         this.reductionTimer();
       } else {
-        this.timerValueIsNull = true;
+        this.runCb();
         this.stop();
         return;
       }
