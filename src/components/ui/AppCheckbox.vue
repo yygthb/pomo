@@ -72,4 +72,14 @@ function onInput(e) {
 .checkbox-wrapper .slider.round:before {
   border-radius: 50%;
 }
+
+body.light {
+  .checkbox-wrapper .slider {
+    background-color: var(--color-bg-dark);
+  }
+
+  .checkbox-wrapper input:checked + .slider {
+    background-color: var(--color-bg-dark-3);
+  }
+}
 </style>

@@ -1,24 +1,34 @@
-const MAIN_TIMER_START_VAL = 2;
-const INITIAL_BREAK_TIMER_VAL = 1;
+import { getFromLS, setToLS } from "@/helpers/ls";
+import { stringToBool } from "@/helpers/stringToBool";
+
+const MAIN_TIMER_LS_KEY = 'pomo-timer-ls-mt';
+const BREAK_TIMER_LS_KEY = 'pomo-timer-ls-bt';
+const AUTOSTART_LS_KEY = 'pomo-timer-ls-autostart';
+
+const initialMainTimer = +getFromLS(MAIN_TIMER_LS_KEY) || 25;
+const initialBreakTimer = +getFromLS(BREAK_TIMER_LS_KEY) || 5;
+const initialAutoStart = stringToBool(getFromLS(AUTOSTART_LS_KEY)) || false;
 
 var timerInterval;
 const TIMER_INTERVAL_VALUE = 10;
 
 export default {
-  mainTimerStartVal: MAIN_TIMER_START_VAL,
+  mainTimerStartVal: initialMainTimer,
   setMainTimerStartVal(min) {
     this.mainTimerStartVal = min;
+    setToLS(MAIN_TIMER_LS_KEY, min);
   },
-  mainTimer: MAIN_TIMER_START_VAL * 60,
+  mainTimer: initialMainTimer * 60,
   setMainTimer(min) {
     this.mainTimer = min * 60;
   },
 
-  breakTimerStartVal: INITIAL_BREAK_TIMER_VAL,
+  breakTimerStartVal: initialBreakTimer,
   setBreakTimerStartVal(min) {
     this.breakTimerStartVal = min;
+    setToLS(BREAK_TIMER_LS_KEY, min);
   },
-  breakTimer: INITIAL_BREAK_TIMER_VAL * 60,
+  breakTimer: initialBreakTimer * 60,
   setBreakTimer(min) {
     this.breakTimer = min * 60;
   },
@@ -72,20 +82,16 @@ export default {
     }
   },
 
-  activeTimerName: 'main',                                      // ['main', 'break']
+  activeTimerName: 'main',                        // ['main', 'break']
   setActiveTimerName(val) {
     this.activeTimerName = val;
   },
   activeTimerValue: 0,
-  autoStart: false,
+
+  autoStart: initialAutoStart,
   setAutoStart(val) {
+    setToLS(AUTOSTART_LS_KEY, val);
     this.autoStart = val;
-  },
-  enableAutoStart() {
-    this.autoStart = true;
-  },
-  disableAutoStart() {
-    this.autoStart = false;
   },
   setActiveTimer(title) {
     this.activeTimerName = title;

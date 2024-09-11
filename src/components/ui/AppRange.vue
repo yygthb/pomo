@@ -23,17 +23,20 @@ function changeHandler(e) {
 
 <template>
   <div class="range-container">
-    <input class="range" type="range" :value="modelValue" @input="changeHandler" step="10" />
+    <input
+      class="range"
+      type="range"
+      :value="modelValue"
+      @input="changeHandler"
+      step="10"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
-
 .range-container {
   $trackHeight: 0.8rem;
-  $trackColor: red;
   $thumbRadius: 1.2rem;
-  $thumbColor: blue;
 
   @mixin slider-thumb {
     position: relative;
@@ -90,6 +93,38 @@ function changeHandler(e) {
       @include slider-thumb;
       top: 50%;
       transform: translate(0, -50%);
+    }
+  }
+}
+
+body.light {
+  .range-container input.range {
+    &::before {
+      background: var(--color-bg-dark);
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--color-bg-dark);
+    }
+
+    &::-moz-range-track {
+      background: var(--color-bg-dark);
+    }
+  }
+}
+
+body.dark {
+  .range-container input.range {
+    &::before {
+      background: var(--color-border);
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: var(--color-border);
+    }
+
+    &::-moz-range-track {
+      background: var(--color-border);
     }
   }
 }
