@@ -140,4 +140,18 @@ function skipClickHandler() {
   display: flex;
   gap: 20px;
 }
+
+@media screen and (max-width: 480px) {
+  .timer-container {
+    padding: 20px;
+  }
+
+  .tabs .tab-item {
+    width: 120px;
+  }
+
+  .timer {
+    font-size: 100px;
+  }
+}
 </style>
