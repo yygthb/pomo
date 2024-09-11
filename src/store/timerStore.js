@@ -1,3 +1,4 @@
+import { formatSecToTime } from "@/helpers/formatSecToTime";
 import { getFromLS, setToLS } from "@/helpers/ls";
 import { stringToBool } from "@/helpers/stringToBool";
 
@@ -67,6 +68,7 @@ export default {
   stop() {
     this.isRunning = false;
     clearInterval(timerInterval);
+    document.title = 'Pomo Timer';
 
     if (this.activeTimerName === "main") {
       this.activeTimerName = "break";
@@ -99,9 +101,11 @@ export default {
   reductionTimer() {
     if (this.activeTimerName === 'main') {
       this.mainTimer -= 1;
+      document.title = formatSecToTime(this.mainTimer);
     }
     if (this.activeTimerName === 'break') {
       this.breakTimer -= 1;
+      document.title = formatSecToTime(this.breakTimer);
     }
     this.updateActiveTimer();
   },

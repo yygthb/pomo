@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { store } from "@/store/store";
-import { lessThanTenMod } from "@/helpers/lessThanTenMod";
+import { formatSecToTime } from "@/helpers/formatSecToTime";
 import AppButton from "./ui/AppButton.vue";
 
 const { timer, sound } = store;
@@ -11,19 +11,12 @@ onMounted(() => {
   timer.updateActiveTimer();
 });
 
-const mappedMainTimer = computed(() => {
-  const min = Math.floor(timer.mainTimer / 60);
-  const sec = Math.floor(timer.mainTimer - min * 60);
-  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
-});
+const mappedMainTimer = computed(() => formatSecToTime(timer.mainTimer));
 
-const mappedBreakTimer = computed(() => {
-  const min = Math.floor(timer.breakTimer / 60);
-  const sec = Math.floor(timer.breakTimer - min * 60);
-  return lessThanTenMod(min) + ":" + lessThanTenMod(sec);
-});
+const mappedBreakTimer = computed(() => formatSecToTime(timer.breakTimer));
 
 const mappedIsRunning = computed(() => timer.isRunning);
+
 const activeTab = computed(() => timer.activeTimerName);
 
 function tabClickHandler(val) {

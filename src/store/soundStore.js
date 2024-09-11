@@ -16,7 +16,7 @@ const soundOptions = [
 ];
 
 const initialSelectedSound = JSON.parse(getFromLS(SOUND_LS_KEY)) || soundOptions[0];
-const initialVolumeLevel = +getFromLS(VOLUME_LVL_LS_KEY) || 30;
+const initialVolumeLevel = +getFromLS(VOLUME_LVL_LS_KEY) || 80;
 
 export default {
   soundOptions,
