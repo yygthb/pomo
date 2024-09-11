@@ -1,6 +1,6 @@
 export default {
   timerTab: {
-    main: 'Pomodoro',
+    main: 'Помидор',
     break: 'Перерыв',
   },
   btn: {
