@@ -1,6 +1,6 @@
 import { formatSecToTime } from "@/helpers/formatSecToTime";
 import { getFromLS, setToLS } from "@/helpers/ls";
-import { stringToBool } from "@/helpers/stringToBool";
+import { getBoolFromString } from "@/helpers/getBoolFromString";
 
 const MAIN_TIMER_LS_KEY = 'pomo-timer-ls-mt';
 const BREAK_TIMER_LS_KEY = 'pomo-timer-ls-bt';
@@ -8,7 +8,7 @@ const AUTOSTART_LS_KEY = 'pomo-timer-ls-autostart';
 
 const initialMainTimer = +getFromLS(MAIN_TIMER_LS_KEY) || 25;
 const initialBreakTimer = +getFromLS(BREAK_TIMER_LS_KEY) || 5;
-const initialAutoStart = stringToBool(getFromLS(AUTOSTART_LS_KEY)) || false;
+const initialAutoStart = getBoolFromString(getFromLS(AUTOSTART_LS_KEY));
 
 var timerInterval;
 const TIMER_INTERVAL_VALUE = 1000;
