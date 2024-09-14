@@ -5,6 +5,8 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/pomo/',
+
   plugins: [
     vue(),
   ],
@@ -21,5 +23,5 @@ export default defineConfig({
         additionalData: `@import "@/assets/styles/_typography.scss";`
       }
     }
-  }
+  },
 })
