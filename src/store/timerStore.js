@@ -11,7 +11,7 @@ const initialBreakTimer = +getFromLS(BREAK_TIMER_LS_KEY) || 5;
 const initialAutoStart = stringToBool(getFromLS(AUTOSTART_LS_KEY)) || false;
 
 var timerInterval;
-const TIMER_INTERVAL_VALUE = 10;
+const TIMER_INTERVAL_VALUE = 1000;
 
 export default {
   mainTimerStartVal: initialMainTimer,
