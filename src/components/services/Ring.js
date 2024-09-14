@@ -1,5 +1,5 @@
 export class Ring extends Audio {
-  constructor(src, volumeLevel = 0.1) {
+  constructor(src, volumeLevel = 0.8) {
     super(src);
     super.volume = volumeLevel;
   }
