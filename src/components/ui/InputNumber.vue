@@ -2,7 +2,11 @@
 const props = defineProps({
   min: {
     type: Number,
-    default: 1,
+    default: 0,
+  },
+  max: {
+    type: Number,
+    default: 60,
   },
 });
 
@@ -10,7 +14,23 @@ const value = defineModel();
 const emit = defineEmits(["onInput"]);
 
 function onInput(e) {
+  if (+e.target.value < props.min) {
+    e.target.value = props.min;
+    emit("onInput", props.min);
+    return;
+  }
+
+  if (+e.target.value > props.max) {
+    e.target.value = props.max;
+    emit("onInput", props.max);
+    return;
+  }
+
   emit("onInput", +e.target.value);
+}
+
+function isNumber(event) {
+  if (!/\d/.test(event.key) && event.key !== ".") return event.preventDefault();
 }
 </script>
 
@@ -19,9 +39,11 @@ function onInput(e) {
     type="number"
     :value="value"
     :min="min"
+    :max="max"
     step="1"
     class="input"
     @input="onInput"
+    @keypress="isNumber"
   />
 </template>
 

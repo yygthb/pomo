@@ -16,13 +16,11 @@ const { timer, sound, lang } = store;
 const mappedMainTimerStartVal = computed(() => timer.mainTimerStartVal);
 function mainTimerStartValChange(val) {
   timer.setMainTimerStartVal(val);
-  timer.setMainTimer(val);
 }
 
 const mappedBreakTimerStartVal = computed(() => timer.breakTimerStartVal);
 function breakTimerStartValChange(val) {
   timer.setBreakTimerStartVal(val);
-  timer.setBreakTimer(val);
 }
 
 const mappedAutoStart = computed(() => timer.autoStart);

@@ -11,27 +11,50 @@ const initialBreakTimer = +getFromLS(BREAK_TIMER_LS_KEY) || 5;
 const initialAutoStart = getBoolFromString(getFromLS(AUTOSTART_LS_KEY));
 
 var timerInterval;
-const TIMER_INTERVAL_VALUE = 1000;
+const TIMER_INTERVAL_VALUE = 50;
 
 export default {
   mainTimerStartVal: initialMainTimer,
   setMainTimerStartVal(min) {
-    this.mainTimerStartVal = min;
-    setToLS(MAIN_TIMER_LS_KEY, min);
+    console.log('set main timer start val', min);
+    if (min < 0) {
+      this.setMainTimer(1);
+      return;
+    }
+
+    if (min > 60) {
+      this.setMainTimer(60);
+      return;
+    }
+
+    this.setMainTimer(min);
   },
   mainTimer: initialMainTimer * 60,
-  setMainTimer(min) {
-    this.mainTimer = min * 60;
+  setMainTimer(val) {
+    this.mainTimerStartVal = val;
+    setToLS(MAIN_TIMER_LS_KEY, val);
+    this.mainTimer = val * 60;
   },
 
   breakTimerStartVal: initialBreakTimer,
   setBreakTimerStartVal(min) {
-    this.breakTimerStartVal = min;
-    setToLS(BREAK_TIMER_LS_KEY, min);
+    if (min <= 0) {
+      this.setBreakTimer(1);
+      return;
+    }
+
+    if (min > 60) {
+      this.setBreakTimer(60);
+      return;
+    }
+
+    this.setBreakTimer(min);
   },
   breakTimer: initialBreakTimer * 60,
-  setBreakTimer(min) {
-    this.breakTimer = min * 60;
+  setBreakTimer(val) {
+    this.breakTimerStartVal = val;
+    setToLS(BREAK_TIMER_LS_KEY, val);
+    this.breakTimer = val * 60;
   },
 
   cb: null,
